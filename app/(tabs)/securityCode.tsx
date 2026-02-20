@@ -43,7 +43,7 @@ export default function SecurityCode() {
         fontWeight: 600,
         color: "rgb(255, 255, 255)",
       }}
-      >Dispositivo di lancio</Text>
+      >Dispositivo di lancio collegato</Text>
       <Text
       style={{
         marginTop: 20,
@@ -79,7 +79,7 @@ export default function SecurityCode() {
         width: 150,
         height: 50,
         alignItems: "center",
-        //backgroundColor: "gray",
+        backgroundColor: "rgb(255, 203, 5)",
         borderRadius: 10,
         borderColor: "rgb(255, 203, 5)",
         borderWidth: 2,
@@ -90,7 +90,8 @@ export default function SecurityCode() {
           style={{
             marginTop: 5,
             fontSize: 25,
-            color: "rgb(255, 255, 255)",
+            fontWeight: 600,
+            color: "rgb(56, 56, 56)",
           }}
         >
           Verifica

@@ -3,20 +3,44 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "./components/settings"
+import DeviceModal from "../deviceSelectModal"
+
+import useBLE from "../useBLE"
 
 
 
 export default function Index() {
 
+  const {
+    scanForPeripherals, 
+    requestPermissions,
+    allDevices,
+    connectToDevice,
+    connectedDevice,
+  } = useBLE();
+
+  const scanForDevices = async () => {
+    const isPermissionsEnabled = await requestPermissions();
+    if (isPermissionsEnabled) {
+      scanForPeripherals();
+    }
+  };
+
   const router = useRouter()
 
   const [isConnected, setIsConnected] = React.useState(true)//dovrebbe essere false ma senza esp uso true
+  const [showModal, setShowModal] = React.useState<boolean>(false)
 
-  function connectDevice(){
-    if(isConnected){
-      router.push("./(tabs)/securityCode")
+  async function connectDevice(){
+    const isPermissionsEnabled = await requestPermissions();
+    if(isPermissionsEnabled){
+      setShowModal(true)
+      console.log(connectToDevice)
+      if(connectedDevice){
+        router.push("./(tabs)/securityCode")
+      }
     } else {
-      alert("Dispositivo non connesso")
+      scanForDevices()
     }
   }
 
@@ -27,11 +51,18 @@ export default function Index() {
         flex: 1,
         //justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgb(56, 56, 56)4)",
+        backgroundColor: "rgb(56, 56, 56)",
       }}
     >
       <SettingsIco />
 
+      <DeviceModal  
+        closeModal={()=>setShowModal(false)}
+        visible={showModal}
+        connectToPeripheral={connectToDevice}
+        devices={allDevices}
+      //è una prova
+      /> 
 
       <Text
         style={{
