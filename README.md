@@ -48,3 +48,26 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## gianma notes
+
+solo android 14+
+
+
+
+fare in modo che quando mi connetto vada direttamente alla pagina di lancio
+
+mappa fake offline quando inserisci il codice animazione che aggancia in automatico la posizione 

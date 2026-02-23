@@ -3,20 +3,47 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "./components/settings"
+import DeviceModal from "./components/deviceSelectModal"
+
+import useBLE from "../useBLE"
 
 
 
 export default function Index() {
 
+  const {
+    scanForPeripherals, 
+    requestPermissions,
+    allDevices,
+    connectToDevice,
+    connectedDevice,
+  } = useBLE();
+
+  const scanForDevices = async () => {
+    const isPermissionsEnabled = await requestPermissions();
+    if (isPermissionsEnabled) {
+      //console.log(isPermissionsEnabled)
+      scanForPeripherals();
+    }
+  };
+
   const router = useRouter()
 
   const [isConnected, setIsConnected] = React.useState(true)//dovrebbe essere false ma senza esp uso true
+  const [showModal, setShowModal] = React.useState<boolean>(false)
 
-  function connectDevice(){
-    if(isConnected){
-      router.push("./(tabs)/securityCode")
+  async function connectDevice(){
+    const isPermissionsEnabled = await requestPermissions();
+    if(isPermissionsEnabled){
+      setShowModal(true)
+      console.log(connectToDevice)
+      scanForDevices()
+      if(connectedDevice){
+        router.push("./(tabs)/securityCode")
+
+      }
     } else {
-      alert("Dispositivo non connesso")
+      //scanForDevices()
     }
   }
 
@@ -27,11 +54,18 @@ export default function Index() {
         flex: 1,
         //justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgb(56, 56, 56)4)",
+        backgroundColor: "rgb(56, 56, 56)",
       }}
     >
       <SettingsIco />
 
+      <DeviceModal  
+        closeModal={()=>setShowModal(false)}
+        visible={showModal}
+        connectToPeripheral={connectToDevice}
+        devices={allDevices}
+      //è una prova
+      /> 
 
       <Text
         style={{
@@ -48,7 +82,7 @@ export default function Index() {
           width: 200,
           height: 60,
           alignItems: "center",
-          //backgroundColor: "rgb(255, 255, 255)",
+          backgroundColor: "rgb(255, 203, 5)",
           borderRadius: 10,
           marginTop: 50,
           borderColor: "rgb(255, 203, 5)",
@@ -59,7 +93,7 @@ export default function Index() {
         <Text
           style={{
             fontSize: 25,
-            color: "rgb(255, 255, 255)",
+            color: "rgb(0, 0, 0)",
             marginTop: 10,
             fontWeight: 600,
           }}

@@ -14,7 +14,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#000000",
         "foregroundImage": "./assets/images/android-icon-foreground1.png",
         "backgroundImage": "./assets/images/android-icon-background1.png",
         "monochromeImage": "./assets/images/android-icon-monochrome1.png" 
@@ -29,6 +29,7 @@
     },
     "plugins": [
       "expo-router",
+      ["@sfourdrinier/react-native-ble-plx", { "neverForLocation": true }],
       [
         "expo-splash-screen",
         {
@@ -45,6 +46,7 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "assetBundlePatterns": ["assets/**/*"]
   }
 }
