@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+
 import { Device } from "@sfourdrinier/react-native-ble-plx";
 
 
@@ -84,17 +85,16 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
     <Modal
       style={{
         flex: 1,
-        backgroundColor: "rgb(109, 109, 109)",
+        backgroundColor: "rgb(78, 78, 78)",
         alignItems: 'center',
       }}
       animationType="slide"
       transparent={false}
       visible={visible}
-      
     >
       <SafeAreaProvider style={{
             flex: 1,
-            backgroundColor: "rgb(109, 109, 109)",
+            backgroundColor: "rgb(78, 78, 78)",
             alignItems: 'center',
       }}>
         <Text 
@@ -104,6 +104,7 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
                 fontWeight: "bold",
                 marginHorizontal: 20,
                 textAlign: "center",
+                color: 'rgb(255, 255, 255)'
             }}>
           Connettiti un dispositivo
         </Text>
@@ -112,7 +113,7 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
           style={{
                 flex: 1,
                 //justifyContent: "center",
-                backgroundColor: 'rgb(109, 109, 109)',
+                backgroundColor: 'rgb(78, 78, 78)',
                 height: 10,
                 width: 300,
                 marginTop: 10,

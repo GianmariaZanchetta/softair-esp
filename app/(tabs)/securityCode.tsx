@@ -3,6 +3,7 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "../components/settings"
+import WrongCodeModal from "../components/wrongCodeModal";
 
 
 export default function SecurityCode() {
@@ -11,15 +12,21 @@ export default function SecurityCode() {
 
 
   const [text, onChangeText] = React.useState("")
+  const [showModal, setShowModal] = React.useState(false)
 
   function testPassword(){
-
     if (text==="123"){
       console.log("correct psw")
-      router.push("./enagageTarget")
+      router.push("./engageTarget")
     } else{
       console.log("wrong psw")
+      setShowModal(true)
     }
+  }
+
+  function retryPsw(){
+    setShowModal(false)
+    //console.log('demo')
   }
 
 
@@ -35,6 +42,7 @@ export default function SecurityCode() {
     >
       <SettingsIco />
 
+      {showModal &&( <WrongCodeModal retryPsw={retryPsw}/> )}
 
       <Text
       style={{
@@ -91,7 +99,7 @@ export default function SecurityCode() {
             marginTop: 5,
             fontSize: 25,
             fontWeight: 600,
-            color: "rgb(56, 56, 56)",
+            color: "rgb(0, 0, 0)",
           }}
         >
           Verifica

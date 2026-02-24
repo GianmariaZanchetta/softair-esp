@@ -16,8 +16,8 @@ export default function SettingsIco() {
                 onPress={toSettings}
                   style={{
                     position: "absolute",
-                    top: 20,
-                    right: 12,
+                    top: 30,
+                    right: 40,
                     padding: 10,
                     borderRadius: 1,
                   }}

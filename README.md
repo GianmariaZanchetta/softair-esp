@@ -71,3 +71,6 @@ solo android 14+
 fare in modo che quando mi connetto vada direttamente alla pagina di lancio
 
 mappa fake offline quando inserisci il codice animazione che aggancia in automatico la posizione 
+
+
+una volta collegata esp da app rimane collegata anche se esp non risponde o perso il paring(riavviata)

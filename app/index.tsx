@@ -1,6 +1,6 @@
 import { Pressable, Text, View, TextInput, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "./components/settings"
 import DeviceModal from "./components/deviceSelectModal"
@@ -32,20 +32,40 @@ export default function Index() {
   const [isConnected, setIsConnected] = React.useState(true)//dovrebbe essere false ma senza esp uso true
   const [showModal, setShowModal] = React.useState<boolean>(false)
 
+  console.log(connectDevice)
   async function connectDevice(){
     const isPermissionsEnabled = await requestPermissions();
     if(isPermissionsEnabled){
-      setShowModal(true)
-      console.log(connectToDevice)
-      scanForDevices()
       if(connectedDevice){
         router.push("./(tabs)/securityCode")
 
+      } else {
+            console.log(connectToDevice)
+            scanForDevices()
+            setShowModal(true)
       }
-    } else {
-      //scanForDevices()
-    }
+    } 
   }
+
+
+    useEffect(()=>{
+      async function connectDevice(){
+        const isPermissionsEnabled = await requestPermissions();
+        if(isPermissionsEnabled){
+          if(connectedDevice){
+            router.push("./(tabs)/securityCode")
+            console.log('mandato')
+          } else {
+            console.log(connectToDevice)
+            scanForDevices()
+            setShowModal(true)
+          }
+        } 
+      }
+      connectDevice()
+      console.log('eseguito')
+    }, [connectedDevice])
+  
 
 
   return (
@@ -57,6 +77,7 @@ export default function Index() {
         backgroundColor: "rgb(56, 56, 56)",
       }}
     >
+
       <SettingsIco />
 
       <DeviceModal  
