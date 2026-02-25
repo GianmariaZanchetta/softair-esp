@@ -1,9 +1,10 @@
 import { Pressable, Text, View, TextInput, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "../components/settings"
 import WrongCodeModal from "../components/wrongCodeModal";
+import CorrectCodeModal from "../components/correctCodeModal";
 
 
 export default function SecurityCode() {
@@ -13,11 +14,20 @@ export default function SecurityCode() {
 
   const [text, onChangeText] = React.useState("")
   const [showModal, setShowModal] = React.useState(false)
+  const [showGraphics, setShowGraphic] = React.useState(false)
 
   function testPassword(){
     if (text==="123"){
       console.log("correct psw")
       router.push("./engageTarget")
+      
+      /*setShowGraphic(true)  
+        const timerGraphics = setTimeout(()=>{
+          setShowGraphic(false)
+          router.push("./engageTarget");
+        }, 25000)*/
+
+      
     } else{
       console.log("wrong psw")
       setShowModal(true)
@@ -29,6 +39,7 @@ export default function SecurityCode() {
     //console.log('demo')
   }
 
+  
 
   return (
     <View
@@ -42,20 +53,23 @@ export default function SecurityCode() {
     >
       <SettingsIco />
 
-      {showModal &&( <WrongCodeModal retryPsw={retryPsw}/> )}
+      {showModal &&( <WrongCodeModal retryPsw={retryPsw} /> )}
+
+      {showGraphics && (<CorrectCodeModal showGraphicsOnPsw={showGraphics} />)}
 
       <Text
       style={{
         marginTop: 35,
-        fontSize: 25,
-        fontWeight: 600,
+        fontSize: 30,
+        fontFamily: 'CallOfOpsDuty',
         color: "rgb(255, 255, 255)",
       }}
       >Dispositivo di lancio collegato</Text>
       <Text
       style={{
-        marginTop: 20,
+        marginTop: 30,
         color: "rgb(255, 255, 255)",
+        
       }}>Inserire il codide segreto:</Text>
 
 
@@ -96,9 +110,9 @@ export default function SecurityCode() {
       >
         <Text
           style={{
-            marginTop: 5,
-            fontSize: 25,
-            fontWeight: 600,
+            marginTop: 10,
+            fontSize: 30,
+            fontFamily: 'CallOfOpsDuty',
             color: "rgb(0, 0, 0)",
           }}
         >

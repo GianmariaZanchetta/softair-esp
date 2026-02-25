@@ -48,14 +48,15 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
                 alignItems: "center",
                 height: 50,
                 marginHorizontal: 20,
-                marginBottom: 5,
+                marginTop: 10,
+                marginBottom: 10,
                 borderRadius: 8,
             }}
             >
             <Text style={{
-                fontSize: 18,
-                fontWeight: "bold",
+                fontSize: 25,
                 color: "rgb(0, 0, 0)",
+                fontFamily: 'CallOfOpsDuty',
             }}>{item.item.name}</Text>
             </TouchableOpacity>
         );
@@ -100,13 +101,15 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
         <Text 
             style={{
                 marginTop: 40,
-                fontSize: 30,
-                fontWeight: "bold",
+                fontSize: 40,
+                fontWeight: 600,
                 marginHorizontal: 20,
                 textAlign: "center",
-                color: 'rgb(255, 255, 255)'
+                color: 'rgb(255, 255, 255)',
+                fontFamily: 'CallOfOpsDuty',
+                
             }}>
-          Connettiti un dispositivo
+          Connetti un dispositivo
         </Text>
 
         <FlatList
@@ -139,10 +142,10 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
       >
         <Text
           style={{
-            fontSize: 25,
+            fontSize: 35,
             color: "rgb(0, 0, 0)",
-            marginTop: 15,
-            fontWeight: 600,
+            marginTop: 20,
+            fontFamily: 'CallOfOpsDuty',
           }}
         >
           Annulla

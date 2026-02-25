@@ -37,7 +37,7 @@ export default function Index() {
     const isPermissionsEnabled = await requestPermissions();
     if(isPermissionsEnabled){
       if(connectedDevice){
-        router.push("./(tabs)/securityCode")
+        router.replace("./(tabs)/securityCode")
 
       } else {
             console.log(connectToDevice)
@@ -91,9 +91,11 @@ export default function Index() {
       <Text
         style={{
           marginTop: 80,
-          fontSize: 30,
-          fontWeight: 700,
-          color: "white"
+          fontSize: 45,
+          color: 'rgb(255, 255, 255)',
+          fontFamily: 'CallOfOpsDuty',
+          textAlign: "center",
+
         }}
       >Connetti il Dispositivo</Text>
       
@@ -113,10 +115,11 @@ export default function Index() {
       >
         <Text
           style={{
-            fontSize: 25,
+            fontSize: 30,
             color: "rgb(0, 0, 0)",
-            marginTop: 10,
+            marginTop: 15,
             fontWeight: 600,
+            fontFamily: 'CallOfOpsDuty',
           }}
         >
           Cerca

@@ -38,7 +38,8 @@ export default function WrongCodeModal({retryPsw}: {retryPsw: any}){
                 style={{
                     color: 'rgb(255,255,255)',
                     fontSize: 40,
-                    fontWeight: 600,
+                    fontFamily: 'CallOfOpsDuty',
+                    marginTop: 10,
                 }}
             >Codice Errato!</Text>
 
@@ -81,16 +82,24 @@ const style = StyleSheet.create({
     },
     styleTextAbort: {
         margin: 50,
-        fontSize: 24,
+        fontSize: 30,
         backgroundColor: 'rgb(106, 224, 52)',
-        padding: 10,
+        padding: 13,
         borderRadius: 6,
+        width: 150,
+        textAlign:'center',
+        fontFamily: 'CallOfOpsDuty',
+        height: 50,
     },
     styleTextRetry: {
         margin: 50,
-        fontSize: 24,
+        fontSize: 30,
         backgroundColor: 'rgb(224, 178, 52)',
-        padding: 10,
+        padding: 13,
         borderRadius: 6,
+        width: 150,
+        textAlign:'center',
+        fontFamily: 'CallOfOpsDuty',
+        height: 50,
     }
 })
