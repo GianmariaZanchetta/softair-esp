@@ -3,9 +3,13 @@ import Animated, { CSSAnimationKeyframes, useSharedValue } from 'react-native-re
 import React,{useEffect, useRef} from "react";
 import { useRouter } from "expo-router";
 import MissionComplete from "./missionComplete";
+import useBLE from '../../useBLE'
+
+
 
 export default function HoldToDefuze() {
 
+    const {sendStop} = useBLE()
     const router = useRouter()
 
     const [startHolding, setStartHolding]= React.useState(false)
@@ -15,6 +19,11 @@ export default function HoldToDefuze() {
     const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 
+    function completeHold(){
+        setCompleteHolding(true)
+        sendStop()
+    }
+
     function pressInAnim() {
         console.log('test')
         setStartHolding(true);
@@ -22,7 +31,7 @@ export default function HoldToDefuze() {
           // evita timer doppi se l’utente preme di nuovo
         if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
 
-        holdTimerRef.current = setTimeout(()=>{setCompleteHolding(true)}, 5000)//capire come posso annullarlo se mollo il bottone, se completo far apparire modale di fine game 
+        holdTimerRef.current = setTimeout(()=>{completeHold()}, 1000)//mettere 5000 in prod
     }
 
 
@@ -86,7 +95,7 @@ return(
                         },
                         {
                             animationName: holdingAnimation,
-                            animationDuration: '5s',
+                            animationDuration: '1s',//mettere 5s in prod
                             animationTimingFunction: 'linear',
                             animationIterationCount: 1,
                             animationDirection: 'normal',

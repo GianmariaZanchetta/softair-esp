@@ -87,7 +87,7 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
                     },
                     {
                         animationName: fakeLoadingBar,
-                        animationDuration: '25s',//impostare 25s, tenere 2 solo in dev
+                        animationDuration: '2s',//impostare 25s, tenere 2 solo in dev
                         animationTimingFunction: 'linear',
                         animationIterationCount: 1,
                         animationDirection: 'normal',

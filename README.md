@@ -74,3 +74,15 @@ mappa fake offline quando inserisci il codice animazione che aggancia in automat
 
 
 una volta collegata esp da app rimane collegata anche se esp non risponde o perso il paring(riavviata)
+
+
+
+aggiungere i controlli: in ogni pagina deve dare errore se la esp si disconnette.
+
+
+
+ LOG  connectedDevice:  null
+ LOG  sendCommand Nessun device connesso
+ LOG  true
+
+ capire perchè connectedDevice da null

@@ -1,13 +1,23 @@
 import { Pressable, Text, View, TextInput, Button } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "../components/settings"
 import WrongCodeModal from "../components/wrongCodeModal";
 import CorrectCodeModal from "../components/correctCodeModal";
+import useBLE from "@/useBLE";
+import IsEspConnected from '../components/isEspConnected'
+
 
 
 export default function SecurityCode() {
+
+  const {connectToDevice} = useBLE();
+
+  /*useEffect(()=>{
+    connectToDevice
+    alert('dispositivo disconnesso')
+  }, []);*/
 
   const router = useRouter()
 
@@ -52,6 +62,8 @@ export default function SecurityCode() {
       }}
     >
       <SettingsIco />
+
+      <IsEspConnected />
 
       {showModal &&( <WrongCodeModal retryPsw={retryPsw} /> )}
 

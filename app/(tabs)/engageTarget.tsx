@@ -33,7 +33,7 @@ export default function EnagageTarget(){
         const timerGraphics = setTimeout(()=>{
           setShowGraphic(false)
           setAfterModal(true)
-        }, 25000)//impostare 25000, tenere 2000 solo in dev
+        }, 2000)//impostare 25000, tenere 2000 solo in dev
 
         function defuzeFunc(){
             setLounchModal(false)
@@ -70,14 +70,15 @@ export default function EnagageTarget(){
                 >
                     <Pressable
                         style={{
-
+                            margin: 10,
+                            padding: 0,
                         }}
                         onPress={defuzeFunc}
                     >
                         <Text
                             style={{
                                 flexDirection: 'row',
-                                margin: 10,
+                                margin: 0,
                                 backgroundColor: 'rgb(255, 203, 5)',
                                 fontSize: 35,
                                 fontFamily: 'CallOfOpsDuty',
@@ -96,14 +97,15 @@ export default function EnagageTarget(){
 
                     <Pressable
                         style={{
-
+                            margin: 10,
+                            padding: 0,
                         }}
                         onPress={lounchFunc}
                     > 
                         <Text
                             style={{
                                 flexDirection: 'row',
-                                margin: 10,
+                                margin: 0,
                                 backgroundColor: 'rgb(255, 59, 59)',
                                 fontSize: 35,
                                 fontFamily: 'CallOfOpsDuty',
@@ -139,7 +141,7 @@ const styles = StyleSheet.create({
         margin: 10,   
         backgroundColor: 'rgb(63, 63, 63)', //'rgb(90, 90, 90)',
         padding: 10,
-        width: 550,
+        width: 650,
         alignItems: 'center',
         borderRadius: 10,
     },
