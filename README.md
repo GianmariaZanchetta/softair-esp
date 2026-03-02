@@ -85,4 +85,4 @@ aggiungere i controlli: in ogni pagina deve dare errore se la esp si disconnette
  LOG  sendCommand Nessun device connesso
  LOG  true
 
- capire perchè connectedDevice da null
+penso che cambiare pagina con router sminchi la ricerca con il ble ma non riesco a trovare l'origine dell'errore

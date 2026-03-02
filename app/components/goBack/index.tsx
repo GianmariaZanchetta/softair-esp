@@ -7,7 +7,7 @@ export default function GoBack(){
     const router = useRouter()
 
     function getBack (){
-        router.push("..")
+        router.replace("..")
     }
 
     return(

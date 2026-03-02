@@ -81,11 +81,12 @@ return(
                     style={[{
                         //width,
                         alignSelf: 'flex-start',
-                        height: 145,
-                        width: 515,
+                        left: -2,
+                        height: 148,
+                        width: 520,
                         position: 'absolute',
-                        backgroundColor: 'rgba(175, 142, 12, 0.5)',
-                        borderRadius: 5, 
+                        backgroundColor: 'rgba(255, 211, 33, 0.7)',
+                        //borderRadius: 5, 
                         animationName: {
                                 '100%': {
                                     transform: [{translateX:100}]
@@ -110,20 +111,20 @@ return(
 const style=StyleSheet.create({
     styleView: {
         flex: 1,
-        backgroundColor: 'rgb(224, 178, 52)',
+        backgroundColor: 'rgb(179, 155, 19)',
         height: 150,
         width: 520,
         position: 'absolute',
         zIndex: 1,
         marginTop: 100,   
-        borderRadius: 8, 
-        borderColor: 'rgb(143, 114, 33)',
-        borderWidth: 3,
+        //borderRadius: 8, 
+        borderColor: 'rgb(255, 255, 255)',
+        borderWidth: 1,
         alignItems: 'center',
         padding: 10,
     },
     styleText: {
-        color: 'rgb(0, 0, 0)',
+        color: 'rgb(255, 255, 255)',
         fontSize: 35,
         fontFamily: 'CallOfOpsDuty',
         marginTop: 45,

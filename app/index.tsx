@@ -1,4 +1,4 @@
-import { Pressable, Text, View, TextInput, Button } from "react-native";
+import { Pressable, Text, View, TextInput, Button, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
@@ -37,8 +37,8 @@ export default function Index() {
   async function connectDevice(){
     const isPermissionsEnabled = await requestPermissions();
     if(isPermissionsEnabled){
-      if(connectedDevice){
-        router.replace("./(tabs)/securityCode")
+      if(connectedDevice && await isReady){
+        router.push("./(tabs)/securityCode")
 
       } else {
             console.log(connectToDevice)
@@ -53,7 +53,7 @@ export default function Index() {
       async function connectDevice(){
         const isPermissionsEnabled = await requestPermissions();
         if(isPermissionsEnabled){
-          if(connectedDevice){
+          if(connectedDevice && await isReady){
             router.push("./(tabs)/securityCode")
             console.log('mandato')
           } else {
@@ -65,7 +65,7 @@ export default function Index() {
       }
       connectDevice()
       console.log('eseguito')
-    }, [connectedDevice])
+    }, [connectedDevice, isReady])
   
 
 
@@ -106,19 +106,23 @@ export default function Index() {
           width: 200,
           height: 60,
           alignItems: "center",
-          backgroundColor: "rgb(255, 203, 5)",
-          borderRadius: 10,
+          backgroundColor: "rgb(44, 44, 44)",
+          //borderRadius: 10,
           marginTop: 50,
-          borderColor: "rgb(255, 203, 5)",
-          borderWidth: 2,
+          borderColor: "rgb(255, 255, 255)",
+          borderWidth: 1,
         }}
         onPress={connectDevice}
       >
+        <View pointerEvents="none" style={[style.angle, style.tl]}></View>
+        <View pointerEvents="none" style={[style.angle, style.tr]}></View>
+        <View pointerEvents="none" style={[style.angle, style.bl]}></View>
+        <View pointerEvents="none" style={[style.angle, style.br]}></View>
         <Text
           style={{
             fontSize: 30,
-            color: "rgb(0, 0, 0)",
-            marginTop: 15,
+            color: "rgb(255, 255, 255)",
+            marginTop: 17,
             fontWeight: 600,
             fontFamily: 'CallOfOpsDuty',
           }}
@@ -133,3 +137,20 @@ export default function Index() {
   );
 }
 
+const style = StyleSheet.create({
+  angle: {
+    position: "absolute", width: 14, height: 14, borderColor: 'white',
+  },
+  tl: {
+    top: -1, left: -1, borderTopWidth: 3, borderLeftWidth: 3, borderTopLeftRadius: 0
+  },
+  tr:{
+    top: -1, right: -1, borderTopWidth: 3, borderRightWidth: 3, borderTopRightRadius: 0
+  },
+  bl:{
+    bottom: -1, left: -1, borderBottomWidth: 3, borderLeftWidth: 3, borderBottomLeftRadius: 0
+  },
+  br:{
+    bottom: -1, right: -1, borderBottomWidth: 3, borderRightWidth: 3, borderBottomRightRadius: 0
+  }
+})

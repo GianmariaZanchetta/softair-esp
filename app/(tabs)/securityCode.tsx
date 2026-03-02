@@ -1,4 +1,4 @@
-import { Pressable, Text, View, TextInput, Button } from "react-native";
+import { Pressable, Text, View, TextInput, Button, StyleSheet } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
@@ -72,7 +72,7 @@ export default function SecurityCode() {
       <Text
       style={{
         marginTop: 35,
-        fontSize: 30,
+        fontSize: 35,
         fontFamily: 'CallOfOpsDuty',
         color: "rgb(255, 255, 255)",
       }}
@@ -81,27 +81,29 @@ export default function SecurityCode() {
       style={{
         marginTop: 30,
         color: "rgb(255, 255, 255)",
-        
+        fontFamily: ''
       }}>Inserire il codide segreto:</Text>
 
 
 
       <TextInput
         style={{
-          height: 40,
-          width: 200,
+          height: 45,
+          width: 210,
           margin: 12,
-          borderWidth: 1.5,
+          borderWidth: 1,
           padding: 10,
-          borderRadius: 10,
-          borderColor: "rgb(255, 203, 5)",
+          //borderRadius: 10,
+          borderColor: "rgb(255, 255, 255)",
           color: 'white',
-          textAlign: "center"
+          textAlign: "center",
+          fontSize: 20,
+          backgroundColor: 'rgb(15, 15, 15)',
         }}
         onChangeText={onChangeText}
         value={text}
         placeholder="123456"
-        placeholderTextColor= "rgb(121, 121, 121)"
+        placeholderTextColor= "rgba(121, 121, 121, 0.73)"
 
       >
 
@@ -110,22 +112,27 @@ export default function SecurityCode() {
       <Pressable
       style={{
         marginTop: 60,
-        width: 150,
-        height: 50,
+        width: 170,
+        height: 60,
         alignItems: "center",
-        backgroundColor: "rgb(255, 203, 5)",
-        borderRadius: 10,
-        borderColor: "rgb(255, 203, 5)",
-        borderWidth: 2,
+        backgroundColor: "rgb(44, 44, 44)",
+        //borderRadius: 10,
+        borderColor: "rgb(255, 255, 255)",
+        borderWidth: 1,
       }}
       onPress={testPassword}
       >
+        <View pointerEvents="none" style={[style.angle, style.tl]}></View>
+        <View pointerEvents="none" style={[style.angle, style.tr]}></View>
+        <View pointerEvents="none" style={[style.angle, style.bl]}></View>
+        <View pointerEvents="none" style={[style.angle, style.br]}></View>
+
         <Text
           style={{
-            marginTop: 10,
+            marginTop: 16,
             fontSize: 30,
             fontFamily: 'CallOfOpsDuty',
-            color: "rgb(0, 0, 0)",
+            color: "rgb(255, 255, 255)",
           }}
         >
           Verifica
@@ -136,3 +143,20 @@ export default function SecurityCode() {
   );
 }
 
+const style = StyleSheet.create({
+  angle: {
+    position: "absolute", width: 14, height: 14, borderColor: 'white',
+  },
+  tl: {
+    top: -1, left: -1, borderTopWidth: 3, borderLeftWidth: 3, borderTopLeftRadius: 0
+  },
+  tr:{
+    top: -1, right: -1, borderTopWidth: 3, borderRightWidth: 3, borderTopRightRadius: 0
+  },
+  bl:{
+    bottom: -1, left: -1, borderBottomWidth: 3, borderLeftWidth: 3, borderBottomLeftRadius: 0
+  },
+  br:{
+    bottom: -1, right: -1, borderBottomWidth: 3, borderRightWidth: 3, borderBottomRightRadius: 0
+  }
+})

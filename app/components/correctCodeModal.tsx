@@ -5,12 +5,7 @@ import Animated, { CSSAnimationKeyframes, useSharedValue } from 'react-native-re
 export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw: any}){
 
 
-    //const width = useSharedValue(0)
-    //useEffect(()=>{
-     //   width.value = 
-    //        width.value + 1
-    //    
-    //}, [showGraphicsOnPsw])
+
 
     const [text, setText] = React.useState('Caricamento...')
 
@@ -59,6 +54,15 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
         }
     }
 
+
+    /*const ticks = ()=>{
+        <View style={{
+
+        }}>
+            <View></View>
+        </View>
+    }*/
+
     return(
         <View
             style={style.styleView}
@@ -73,16 +77,12 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
                     //width,
                     alignSelf: 'flex-start',
                     height: 30,
-                    backgroundColor: 'rgb(103, 170, 41)',
-                    borderRadius: 3,
-                    borderColor: 'rgb(82, 139, 29)',
-                    borderWidth: 2,
+                    backgroundColor: 'rgb(255, 255, 255)',
+                    //borderRadius: 3,
+                    borderColor: 'rgb(255, 255, 255)',
+                    borderWidth: 3,
                     marginTop: 50,
-                    animationName: {
-                            '100%': {
-                                transform: [{translateX:100}]
-                            }
-                        },
+                    gap: 2,
                     animationDuration: '1000ms'
                     },
                     {
@@ -93,7 +93,19 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
                         animationDirection: 'normal',
                     }]}  
             />
-
+            <View
+            style={{
+                position: 'relative',
+                alignSelf: 'flex-start',
+                height: 30,
+                backgroundColor: 'rgba(0, 0, 0, 0)',
+                //borderRadius: 3,
+                borderColor: 'rgb(255, 255, 255)',
+                borderWidth: 1,
+                marginTop: 0,
+                width: 520,
+                top: -30,
+            }}></View>
         </View>
     )
 }
@@ -102,15 +114,15 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
 const style=StyleSheet.create({
     styleView: {
         flex: 1,
-        backgroundColor: 'rgb(224, 178, 52)',
+        backgroundColor: 'rgb(44, 44, 44)',
         height: 200,
         width: 550,
         position: 'absolute',
         zIndex: 1,
         marginTop: 100,   
-        borderRadius: 8, 
-        borderColor: 'rgb(143, 114, 33)',
-        borderWidth: 3,
+        //borderRadius: 8, 
+        borderColor: 'rgb(255, 255, 255)',
+        borderWidth: 1,
         alignItems: 'center',
         padding: 10,
     },

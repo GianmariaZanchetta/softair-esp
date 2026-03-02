@@ -2,10 +2,11 @@ import { Pressable, Text, View, TextInput, Button, FlatList } from "react-native
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import GoBack from "../components/goBack";
+import { useBle } from "@/useBleContext";
 
 export default function Index(){
 
-
+const {disconnectFromDevice} = useBle()
 
     return(
         <View
@@ -46,12 +47,12 @@ export default function Index(){
                 
                 <FlatList 
                     data={[
-                        {key: 'settings1'},
-                        {key: 'settings2'},
-                        {key: 'settings3'},
-                        {key: 'settings4'},
-                        {key: 'settings5'},
-                        {key: 'settings6'},
+                        {key: 'Disconnetti ble device', func: disconnectFromDevice},
+                        {key: 'settings2', func: () => {}},
+                        {key: 'settings3', func: () => {}},
+                        {key: 'settings4', func: () => {}},
+                        {key: 'settings5', func: () => {}},
+                        {key: 'settings6', func: () => {}},
                     ]}
                     renderItem={({item})=>
                         <Pressable
@@ -60,6 +61,7 @@ export default function Index(){
                                 borderColor: 'black',
                                 borderWidth: 1,
                             }}
+                            onPress={item.func}
                         >
                         
                             <Text

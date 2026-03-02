@@ -115,7 +115,8 @@ function useBLE(): BluetoothLowEnergyApi{
         console.log('1')
         bleManager.startDeviceScan(null, null, (error, device)=>{
             if(error) {
-                console.log('error: ', error);
+                console.log('error scanForPeripherals: ', error);
+                
             }
             
             if(device && device.name?.includes('ESP-Attuatore')) {
@@ -126,8 +127,9 @@ function useBLE(): BluetoothLowEnergyApi{
                     }
                     return prevState;
                 })
-            }
+            } 
         } )
+        //setTimeout(()=> bleManager.stopDeviceScan(), 60000) //crea problemi
     };
 
 
@@ -150,6 +152,7 @@ function useBLE(): BluetoothLowEnergyApi{
             console.log("Error In connection", e);
             alert('device disconnesso errore')
             setIsReady(false);
+            //---------------------------errore qui
         }
     };
 
@@ -166,6 +169,7 @@ function useBLE(): BluetoothLowEnergyApi{
             console.log('onStateUpdate: ', error)
             alert('onStateUpdate alert 1')
             setIsReady(false);
+            
             return
         } else if (!characteristic?.value) {
             console.log('onStateUpdate no data recived')
@@ -203,12 +207,9 @@ function useBLE(): BluetoothLowEnergyApi{
             setCommand('stop')
             setIsReady(false);
             setDeviceState(null);
-            //alert('device disconnesso')
+            alert('device disconnesso')
         }
     }
-    useEffect(()=>{
-        
-    })
 
 
 
@@ -239,6 +240,7 @@ function useBLE(): BluetoothLowEnergyApi{
             console.log("Inviato comando: ", cmd);
         } catch (e) {
             console.log("Errore invio comando: ", e);
+            
         }
     };
 

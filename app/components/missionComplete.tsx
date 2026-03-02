@@ -15,8 +15,8 @@ export default function MissionComplete({defuzeOrLounch}: {defuzeOrLounch: strin
     return(
         <View
             style={[{
-                backgroundColor: isAreaSafe ? 'rgb(224, 178, 52)' : 'rgb(255, 59, 59)',
-                borderColor: isAreaSafe ? 'rgb(143, 114, 33)' : 'rgb(187, 40, 40)',
+                backgroundColor: isAreaSafe ? 'rgb(179, 155, 19)' : 'rgb(236, 26, 26)',
+                borderColor: 'rgb(255, 255, 255)',
             }, 
             style.styleView]}
         >
@@ -43,13 +43,13 @@ const style = StyleSheet.create({
     styleView:{
         flex: 1,
         
-        height: 353,
+        height: 356,
         width: 600,
         position: 'absolute',
         zIndex: 1,
         marginTop: -80,   
-        borderRadius: 8, 
-        borderWidth: 3,
+        //borderRadius: 8, 
+        borderWidth: 1,
         alignItems: 'center',
         padding: 10,
         //justifyContent: 'center',
