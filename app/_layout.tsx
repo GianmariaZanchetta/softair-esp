@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Platform } from "react-native";
 import * as NavigationBar from 'expo-navigation-bar';
 import { useFonts } from "expo-font";
+import { BleProvider } from "@/useBleContext";
 
 
 export default function RootLayout() {
@@ -18,10 +19,11 @@ export default function RootLayout() {
 
   if (!loaded) return null;
   return (
-    <Stack screenOptions={{
-      headerShown: false, 
-      headerTitleStyle: { fontFamily: "CallOfOpsDuty" }}}
-    />
-    
+    <BleProvider>
+      <Stack screenOptions={{
+        headerShown: false, 
+        headerTitleStyle: { fontFamily: "CallOfOpsDuty" }}}
+      />
+    </BleProvider>
   );
 }

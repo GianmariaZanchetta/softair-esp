@@ -1,5 +1,5 @@
 import { PermissionsAndroid, Platform } from "react-native";
-import { useMemo, useState, useRef } from "react";
+import { useMemo, useState, useRef, useEffect } from "react";
 import {BleError, BleManager, Characteristic, Device, Subscription} from "@sfourdrinier/react-native-ble-plx"
 //import { Base64 } from "@sfourdrinier/react-native-ble-plx";
 import { Buffer } from "buffer";
@@ -26,6 +26,10 @@ interface BluetoothLowEnergyApi{
 }
 
 function useBLE(): BluetoothLowEnergyApi{
+
+    const instanceId = useRef(Math.random().toString(16).slice(2)).current;
+    console.log("useBLE instance:", instanceId);
+
     const bleManager = useMemo(()=> new BleManager(), []);
 
     const [allDevices, setAllDevices] = useState<Device[]>([])
@@ -37,6 +41,7 @@ function useBLE(): BluetoothLowEnergyApi{
 
     const lastStateAtRef = useRef<number>(0)
     const stateSubRef = useRef<Subscription | null>(null)
+    const connectedDeviceRef = useRef<Device | null>(null)
 
     const decodeB64 = (b64: string) =>Buffer.from(b64, 'base64').toString('utf-8');
     const encodeB64 = (txt: string) =>Buffer.from(txt, 'utf-8').toString('base64')
@@ -132,17 +137,19 @@ function useBLE(): BluetoothLowEnergyApi{
         console.log('2')
         try{
             const deviceConnection = await bleManager.connectToDevice(device.id);
+            connectedDeviceRef.current = deviceConnection
             setConnectedDevice(deviceConnection);
-            console.log('connectedDevice: ', connectedDevice, 'deviceConnection: ', deviceConnection)
+            console.log('connectedDevice: ', deviceConnection, 'deviceConnection: ', deviceConnection)
             //alert('dispositivo')
             await deviceConnection.discoverAllServicesAndCharacteristics();
-            bleManager.stopDeviceScan();
+            await bleManager.stopDeviceScan();
 
-            await startStreamingService(deviceConnection);//servirà veramente? verificare....
+            //await startStreamingService(deviceConnection);//servirà veramente? verificare....
             await handshake(deviceConnection);
         } catch(e) {
             console.log("Error In connection", e);
             alert('device disconnesso errore')
+            setIsReady(false);
         }
     };
 
@@ -153,11 +160,12 @@ function useBLE(): BluetoothLowEnergyApi{
         console.log('3')
         console.log("NOTIFY from:", characteristic?.serviceUUID, characteristic?.uuid);
         console.log("RAW:", characteristic?.value);
-        console.log("DEC:", characteristic?.value ? decodeB64(characteristic.value) : null);
+        console.log("DECIFRATO:", characteristic?.value ? decodeB64(characteristic.value) : null);
         console.log('error: ', error, 'characteristic: ', characteristic)
-        if( error ){
+        if(error){
             console.log('onStateUpdate: ', error)
             alert('onStateUpdate alert 1')
+            setIsReady(false);
             return
         } else if (!characteristic?.value) {
             console.log('onStateUpdate no data recived')
@@ -171,7 +179,7 @@ function useBLE(): BluetoothLowEnergyApi{
     }
 
 
-    const startStreamingData = async (device: Device) =>{
+    /*const startStreamingData = async (device: Device) =>{
         if (device) {
             device.monitorCharacteristicForService(
             SERVICE_UUID,
@@ -181,7 +189,7 @@ function useBLE(): BluetoothLowEnergyApi{
         } else {
             'no device connected'
         }
-    }
+    }*/
 
     const disconnectFromDevice = ()=>{
         console.log('4')
@@ -190,6 +198,7 @@ function useBLE(): BluetoothLowEnergyApi{
 
         if(connectedDevice){
             bleManager.cancelDeviceConnection(connectedDevice.id);
+            connectedDeviceRef.current = null;
             setConnectedDevice(null);
             setCommand('stop')
             setIsReady(false);
@@ -197,6 +206,9 @@ function useBLE(): BluetoothLowEnergyApi{
             //alert('device disconnesso')
         }
     }
+    useEffect(()=>{
+        
+    })
 
 
 
@@ -214,7 +226,10 @@ function useBLE(): BluetoothLowEnergyApi{
             console.log('try to send')
             const valueBase64 = Buffer.from(cmd, "utf8").toString("base64");
 
-            await connectedDevice.writeCharacteristicWithResponseForService(
+            const dev = connectedDeviceRef.current
+            if(!dev) return
+
+            await dev.writeCharacteristicWithResponseForService(
             SERVICE_UUID,
             CMD_UUID,
             valueBase64
@@ -274,12 +289,12 @@ function useBLE(): BluetoothLowEnergyApi{
             await new Promise((r) => setTimeout(r, 50));
         }
         return false;
-        };
+    };
 
         const handshake = async (device: Device) => {
             console.log('9')
             console.log('device handshake: ', device)
-            try{
+            //try{
                 // 1) subscribe notify
                 startStreamingService(device);//viene inviato anche dal 6 è corretto?
 
@@ -304,10 +319,10 @@ function useBLE(): BluetoothLowEnergyApi{
                 // if (deviceState !== "IDLE") ...
 
                 setIsReady(true);
-            } catch(e){
-                console.log('handshake e: ', e)
+            //} catch(e){
+            //    console.log('handshake e: ', e)
                 alert('handshake')
-            }
+            //}
         };
 
 

@@ -5,7 +5,7 @@ import { useRouter } from "expo-router";
 import SettingsIco from "./components/settings"
 import DeviceModal from "./components/deviceSelectModal"
 
-import useBLE from "../useBLE"
+import { useBle } from "@/useBleContext";
 
 
 
@@ -17,7 +17,8 @@ export default function Index() {
     allDevices,
     connectToDevice,
     connectedDevice,
-  } = useBLE();
+    isReady,
+  } = useBle();
 
   const scanForDevices = async () => {
     const isPermissionsEnabled = await requestPermissions();

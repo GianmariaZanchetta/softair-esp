@@ -3,13 +3,13 @@ import Animated, { CSSAnimationKeyframes, useSharedValue } from 'react-native-re
 import React,{useEffect, useRef} from "react";
 import { useRouter } from "expo-router";
 import MissionComplete from "./missionComplete";
-import useBLE from '../../useBLE'
+import { useBle } from "@/useBleContext";
 
 
 
 export default function HoldToDefuze() {
 
-    const {sendStop} = useBLE()
+    const {sendDown} = useBle()
     const router = useRouter()
 
     const [startHolding, setStartHolding]= React.useState(false)
@@ -21,7 +21,7 @@ export default function HoldToDefuze() {
 
     function completeHold(){
         setCompleteHolding(true)
-        sendStop()
+        sendDown()
     }
 
     function pressInAnim() {

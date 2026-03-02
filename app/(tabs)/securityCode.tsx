@@ -5,14 +5,14 @@ import { useRouter } from "expo-router";
 import SettingsIco from "../components/settings"
 import WrongCodeModal from "../components/wrongCodeModal";
 import CorrectCodeModal from "../components/correctCodeModal";
-import useBLE from "@/useBLE";
 import IsEspConnected from '../components/isEspConnected'
+import { useBle } from "@/useBleContext";
 
 
 
 export default function SecurityCode() {
 
-  const {connectToDevice} = useBLE();
+  const {connectToDevice} = useBle();
 
   /*useEffect(()=>{
     connectToDevice

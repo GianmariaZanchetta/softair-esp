@@ -3,12 +3,12 @@ import Animated, { CSSAnimationKeyframes, useSharedValue } from 'react-native-re
 import React,{useEffect, useRef} from "react";
 import { useRouter } from "expo-router";
 import MissionComplete from "./missionComplete";
-import useBLE from "@/useBLE";
+import { useBle } from "@/useBleContext";
 
 export default function HoldToLounch() {
 
     const router = useRouter()
-    const{sendUp} = useBLE()
+    const{sendUp} = useBle()
 
     const [startHolding, setStartHolding]= React.useState(false)
     const [completeHolding, setCompleteHolding] = React.useState(false)
