@@ -29,7 +29,7 @@ export default function HoldToLounch() {
           // evita timer doppi se l’utente preme di nuovo
         if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
 
-        holdTimerRef.current = setTimeout(()=>{completeHold()}, 1000)//mettere 5000 in prod
+        holdTimerRef.current = setTimeout(()=>{completeHold()}, 5000)//mettere 5000 in prod
     }
 
 
@@ -90,7 +90,7 @@ return(
                                     transform: [{translateX:100}]
                                 }
                             },
-                        animationDuration: '1000ms'
+                        animationDuration: '5000ms'
                         },
                         {
                             animationName: holdingAnimation,

@@ -37,7 +37,7 @@ import { Device } from "@sfourdrinier/react-native-ble-plx";
         const connectAndCloseModal = useCallback(() => {
           //console.log(item)
             connectToPeripheral(item.item);
-            closeModal();
+            //closeModal();
         }, [closeModal, connectToPeripheral, item.item]);
 
         return (

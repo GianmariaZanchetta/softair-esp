@@ -9,7 +9,7 @@ export default function SettingsIco() {
 
   function toSettings(){
     console.log("settings")
-    router.push("/settings")
+    router.replace("/settings")
   }
 
     return(

@@ -34,7 +34,7 @@ export default function EnagageTarget(){
         const timerGraphics = setTimeout(()=>{
           setShowGraphic(false)
           setAfterModal(true)
-        }, 2000)//impostare 25000, tenere 2000 solo in dev
+        }, 25000)//impostare 25000, tenere 2000 solo in dev
 
         function defuzeFunc(){
             setLounchModal(false)
@@ -64,6 +64,7 @@ export default function EnagageTarget(){
             {afterModal &&(<View
                 style={styles.viewModal}
             >
+                <IsEspConnected />
                 <VideoView style={styles.video} player={player} nativeControls={false} />
                 <View
                     style={styles.viewButton}

@@ -31,7 +31,7 @@ export default function HoldToDefuze() {
           // evita timer doppi se l’utente preme di nuovo
         if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
 
-        holdTimerRef.current = setTimeout(()=>{completeHold()}, 1000)//mettere 5000 in prod
+        holdTimerRef.current = setTimeout(()=>{completeHold()}, 5000)//mettere 5000 in prod
     }
 
 
@@ -92,11 +92,11 @@ return(
                                     transform: [{translateX:100}]
                                 }
                             },
-                        animationDuration: '1000ms'
+                        animationDuration: '5000ms'//mettere 5000 in prod
                         },
                         {
                             animationName: holdingAnimation,
-                            animationDuration: '1s',//mettere 5s in prod
+                            animationDuration: '5s',//mettere 5s in prod
                             animationTimingFunction: 'linear',
                             animationIterationCount: 1,
                             animationDirection: 'normal',

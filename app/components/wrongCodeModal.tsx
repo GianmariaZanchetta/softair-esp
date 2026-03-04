@@ -9,7 +9,7 @@ export default function WrongCodeModal({retryPsw}: {retryPsw: any}){
 
     async function abort(){
         console.log('abort')
-        router.push('/')
+        router.replace('/')
     }
 
     async function retry(){
@@ -50,19 +50,7 @@ export default function WrongCodeModal({retryPsw}: {retryPsw: any}){
                 }}
             >
 
-                <Pressable
-                    style={style.styleViewAbort}
-                    onPress={abort}
-                >
-                    <View pointerEvents="none" style={[style.angle, style.tl]}></View>
-                    <View pointerEvents="none" style={[style.angle, style.tr]}></View>
-                    <View pointerEvents="none" style={[style.angle, style.bl]}></View>
-                    <View pointerEvents="none" style={[style.angle, style.br]}></View>
-                    
-                    <Text
-                        style={style.styleText}
-                    >Esci</Text>
-                </Pressable>
+
 
 
                 <Pressable
@@ -129,3 +117,21 @@ const style = StyleSheet.create({
         bottom: -1, right: -1, borderBottomWidth: 3, borderRightWidth: 3, borderBottomRightRadius: 0
     }
 })
+
+
+
+/*
+                <Pressable
+                    style={style.styleViewAbort}
+                    onPress={abort}
+                >
+                    <View pointerEvents="none" style={[style.angle, style.tl]}></View>
+                    <View pointerEvents="none" style={[style.angle, style.tr]}></View>
+                    <View pointerEvents="none" style={[style.angle, style.bl]}></View>
+                    <View pointerEvents="none" style={[style.angle, style.br]}></View>
+                    
+                    <Text
+                        style={style.styleText}
+                    >Esci</Text>
+                </Pressable>
+*/

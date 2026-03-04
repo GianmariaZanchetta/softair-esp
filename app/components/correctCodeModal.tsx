@@ -83,11 +83,11 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
                     borderWidth: 3,
                     marginTop: 50,
                     gap: 2,
-                    animationDuration: '1000ms'
+                    animationDuration: '25000ms'
                     },
                     {
                         animationName: fakeLoadingBar,
-                        animationDuration: '2s',//impostare 25s, tenere 2 solo in dev
+                        animationDuration: '25s',//impostare 25s, tenere 2 solo in dev
                         animationTimingFunction: 'linear',
                         animationIterationCount: 1,
                         animationDirection: 'normal',

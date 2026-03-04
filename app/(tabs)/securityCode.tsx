@@ -1,4 +1,4 @@
-import { Pressable, Text, View, TextInput, Button, StyleSheet } from "react-native";
+import { Pressable, Text, View, TextInput, Button, StyleSheet, Alert } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "expo-router";
@@ -12,7 +12,7 @@ import { useBle } from "@/useBleContext";
 
 export default function SecurityCode() {
 
-  const {connectToDevice} = useBle();
+  const {connectedDevice, isReady} = useBle();
 
   /*useEffect(()=>{
     connectToDevice
@@ -28,9 +28,18 @@ export default function SecurityCode() {
 
   function testPassword(){
     if (text==="123"){
+      if(connectedDevice && isReady){
       console.log("correct psw")
-      router.push("./engageTarget")
-      
+      router.push("./engageTarget")//sistemare l'alert si vede per mezzo secondo poi va sotto
+      }else{
+        Alert.alert(
+          'Dispositivo disconnesso',
+          'Credenziali corrette ma dispositivo disconnesso',
+          [{text: 'ok', onPress:()=>{router.replace('/')}}],
+          { cancelable: false },
+        )
+      }
+
       /*setShowGraphic(true)  
         const timerGraphics = setTimeout(()=>{
           setShowGraphic(false)
@@ -71,7 +80,7 @@ export default function SecurityCode() {
 
       <Text
       style={{
-        marginTop: 35,
+        marginTop: 55,
         fontSize: 35,
         fontFamily: 'CallOfOpsDuty',
         color: "rgb(255, 255, 255)",

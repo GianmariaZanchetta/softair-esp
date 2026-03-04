@@ -1,8 +1,9 @@
-import { PermissionsAndroid, Platform } from "react-native";
+import { PermissionsAndroid, Platform, Alert } from "react-native";
 import { useMemo, useState, useRef, useEffect } from "react";
 import {BleError, BleManager, Characteristic, Device, Subscription} from "@sfourdrinier/react-native-ble-plx"
 //import { Base64 } from "@sfourdrinier/react-native-ble-plx";
 import { Buffer } from "buffer";
+import { useRouter } from "expo-router";
 
 import * as ExpoDevice from "expo-device"
 
@@ -27,6 +28,8 @@ interface BluetoothLowEnergyApi{
 
 function useBLE(): BluetoothLowEnergyApi{
 
+
+
     const instanceId = useRef(Math.random().toString(16).slice(2)).current;
     console.log("useBLE instance:", instanceId);
 
@@ -46,7 +49,20 @@ function useBLE(): BluetoothLowEnergyApi{
     const decodeB64 = (b64: string) =>Buffer.from(b64, 'base64').toString('utf-8');
     const encodeB64 = (txt: string) =>Buffer.from(txt, 'utf-8').toString('base64')
 
-    
+    const router = useRouter()
+    function alertToHome(){
+        Alert.alert(
+            'Device disconnesso',
+            `In caso di problemi si consiglia il riavvio dell'applicazione e del dispositivo remoto`,
+            [{text: 'Ok', 
+                onPress: ()=>{/*router.replace('/')*/}
+
+            }],
+            {cancelable: false},
+        )
+    }
+
+
     const requestAndroid31Permissions = async () => {
 
         const bluetoothScanPermissions = await PermissionsAndroid.request(
@@ -149,12 +165,13 @@ function useBLE(): BluetoothLowEnergyApi{
             //await startStreamingService(deviceConnection);//servirà veramente? verificare....
             await handshake(deviceConnection);
         } catch(e) {
-            console.log("Error In connection", e);
-            alert('device disconnesso errore')
+            console.log("2 Error In connection", e);
+            //alert('device disconnesso errore')
             setIsReady(false);
-            //---------------------------errore qui
-        }
-    };
+            alertToHome()
+                    //---------------------------errore qui
+                }
+            };
 
     const onStateUpdate = (
         error: BleError | null,
@@ -166,10 +183,19 @@ function useBLE(): BluetoothLowEnergyApi{
         console.log("DECIFRATO:", characteristic?.value ? decodeB64(characteristic.value) : null);
         console.log('error: ', error, 'characteristic: ', characteristic)
         if(error){
-            console.log('onStateUpdate: ', error)
-            alert('onStateUpdate alert 1')
-            setIsReady(false);
+            console.log('1 onStateUpdate: ', error)
+            //alert('onStateUpdate alert ')
             
+            setIsReady(false);
+            Alert.alert(
+                'Device disconnesso',
+                `In caso di problemi si consiglia il riavvio dell'applicazione e del dispositivo remoto`,
+                [{text: 'Ok', 
+                    onPress: ()=>{}
+
+                }],
+                {cancelable: false},
+            )
             return
         } else if (!characteristic?.value) {
             console.log('onStateUpdate no data recived')
@@ -207,7 +233,8 @@ function useBLE(): BluetoothLowEnergyApi{
             setCommand('stop')
             setIsReady(false);
             setDeviceState(null);
-            alert('device disconnesso')
+            //alert('device disconnesso')
+            alertToHome()
         }
     }
 
@@ -323,7 +350,7 @@ function useBLE(): BluetoothLowEnergyApi{
                 setIsReady(true);
             //} catch(e){
             //    console.log('handshake e: ', e)
-                alert('handshake')
+                //alert('handshake')  //-------------------------------------------
             //}
         };
 

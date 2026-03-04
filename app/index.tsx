@@ -38,6 +38,7 @@ export default function Index() {
     const isPermissionsEnabled = await requestPermissions();
     if(isPermissionsEnabled){
       if(connectedDevice && await isReady){
+        setShowModal(false)
         router.push("./(tabs)/securityCode")
 
       } else {
@@ -54,7 +55,8 @@ export default function Index() {
         const isPermissionsEnabled = await requestPermissions();
         if(isPermissionsEnabled){
           if(connectedDevice && await isReady){
-            router.push("./(tabs)/securityCode")
+            setShowModal(false)
+            router.push("/(tabs)/securityCode")
             console.log('mandato')
           } else {
             console.log(connectToDevice)
