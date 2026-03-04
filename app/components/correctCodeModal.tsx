@@ -91,6 +91,7 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
                         animationTimingFunction: 'linear',
                         animationIterationCount: 1,
                         animationDirection: 'normal',
+                        animationFillMode: 'forwards',
                     }]}  
             />
             <View
@@ -105,7 +106,34 @@ export default function CorrectCodeModal({showGraphicsOnPsw}: {showGraphicsOnPsw
                 marginTop: 0,
                 width: 520,
                 top: -30,
-            }}></View>
+            }}>
+            </View>
+
+            <View
+                style={{
+                    flexDirection: 'row',
+                    alignItems: "center",
+                    marginLeft: -20,
+                }}>
+                {Array.from({length: 42}).map((_, i) =>(
+                    <View 
+                    key={i}
+                    style={{
+                        position: 'relative',
+                        alignSelf: 'flex-start',
+                        height: 28,
+                        backgroundColor: 'rgb(44, 44, 44)',
+                        marginTop: -59,
+                        marginLeft: 10,
+                        width: 2,
+                        //top: -30,
+                }}></View>
+                ))}
+            </View>
+
+
+
+
         </View>
     )
 }
