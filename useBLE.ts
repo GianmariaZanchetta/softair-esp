@@ -10,6 +10,7 @@ import * as ExpoDevice from "expo-device"
 const SERVICE_UUID= "12345678-1234-1234-1234-1234567890ab";
 const CMD_UUID = "12345678-1234-1234-1234-1234567890ac";
 const STATE_UUID = "12345678-1234-1234-1234-1234567890ad";
+const RESP_UUID  = "12345678-1234-1234-1234-1234567890ae";//risponde se il codice segreto inviato è true o false
 
 interface BluetoothLowEnergyApi{
     requestPermissions(): Promise<boolean>;
@@ -19,7 +20,8 @@ interface BluetoothLowEnergyApi{
     connectedDevice: Device | null;
     command: string;
     disconnectFromDevice(): void;
-    sendCommand: (cmd: "UP" | "DOWN" | "STOP") => Promise<void>;
+    sendCommand: (cmd: "CMD:UP" | "CMD:DOWN" | "CMD:STOP") => Promise<void>;//comandi per attuatore
+    sendString: (str: string) => Promise<void>;//invia stringa 
     sendStop: () => Promise<void>;
     sendUp: () => Promise<void>;
     sendDown: () => Promise<void>;
@@ -44,6 +46,8 @@ function useBLE(): BluetoothLowEnergyApi{
 
     const lastStateAtRef = useRef<number>(0)
     const stateSubRef = useRef<Subscription | null>(null)
+    const secretSubRef = useRef<Subscription | null>(null)
+
     const connectedDeviceRef = useRef<Device | null>(null)
 
     const decodeB64 = (b64: string) =>Buffer.from(b64, 'base64').toString('utf-8');
@@ -209,6 +213,41 @@ function useBLE(): BluetoothLowEnergyApi{
     }
 
 
+
+
+    const onResponseUpdate = (
+        error: BleError | null,
+        characteristic: Characteristic | null
+    ) =>{
+        console.log('11')
+        console.log("NOTIFY from:", characteristic?.serviceUUID, characteristic?.uuid);
+        console.log("RAW:", characteristic?.value);
+        console.log("DECIFRATO:", characteristic?.value ? decodeB64(characteristic.value) : null);
+        console.log('error: ', error, 'characteristic: ', characteristic)
+        if(error){
+            console.log('1 onResponseUpdate: ', error)
+            //alert('onResponseUpdate alert ')
+            
+            setIsReady(false);
+            Alert.alert(
+                'Device disconnesso',
+                `In caso di problemi si consiglia il riavvio dell'applicazione e del dispositivo remoto`,
+                [{text: 'Ok', 
+                    onPress: ()=>{}
+
+                }],
+                {cancelable: false},
+            )
+            return
+        } else if (!characteristic?.value) {
+            console.log('onResponseUpdate no data recived')
+            return
+        }
+        const rawData = decodeB64(characteristic.value)
+        console.log('rawData: ', rawData)
+        //-----------------------------------------------------------------------
+    }
+
     /*const startStreamingData = async (device: Device) =>{
         if (device) {
             device.monitorCharacteristicForService(
@@ -224,6 +263,8 @@ function useBLE(): BluetoothLowEnergyApi{
     const disconnectFromDevice = ()=>{
         console.log('4')
             stateSubRef.current?.remove();
+            stateSubRef.current = null;
+            secretSubRef.current?.remove();
             stateSubRef.current = null;
 
         if(connectedDevice){
@@ -241,7 +282,7 @@ function useBLE(): BluetoothLowEnergyApi{
 
 
     //send command
-    type Cmd = "UP" | "DOWN" | "STOP";
+    type Cmd = "CMD:UP" | "CMD:DOWN" | "CMD:STOP";
 
     const sendCommand = async (cmd: Cmd) => {
         console.log('5')
@@ -271,9 +312,40 @@ function useBLE(): BluetoothLowEnergyApi{
         }
     };
 
-    const sendStop = () => sendCommand("STOP");
-    const sendUp = () => sendCommand("UP");
-    const sendDown = () => sendCommand("DOWN");
+    const sendStop = () => sendCommand("CMD:STOP");
+    const sendUp = () => sendCommand("CMD:UP");
+    const sendDown = () => sendCommand("CMD:DOWN");
+
+    //invia una stringa generica
+    const sendString = async (str: string) => {
+        console.log('12')
+        console.log('connectedDevice: ', connectedDevice)
+        if (!connectedDevice) {
+            console.log("sendCommand Nessun device connesso");
+            return;
+        }
+        try {
+            console.log('try to send')
+            const valueBase64 = Buffer.from(str, "utf8").toString("base64");
+
+            const dev = connectedDeviceRef.current
+            if(!dev) return
+
+            await dev.writeCharacteristicWithResponseForService(
+            SERVICE_UUID,
+            CMD_UUID,
+            valueBase64
+            );
+
+            setCommand(str.toUpperCase()); 
+            console.log("Inviato comando: ", str);
+        } catch (e) {
+            console.log("Errore invio comando: ", e);
+            
+        }
+    };
+
+    const verifySecret =(str: string)=>sendString(str)
 
 
     //check connection
@@ -290,6 +362,24 @@ function useBLE(): BluetoothLowEnergyApi{
         )
         console.log('stateSubRef startStreamingService2: ', stateSubRef.current)
     }
+
+
+
+    //response verify credential--------------------------------------
+    const monitorResponseSecret = (device: Device) => {
+        console.log('10')
+        console.log('device monitorResponseSecret: ', device)
+        console.log(' secretSubRef monitorResponseSecret1: ', secretSubRef.current)
+        secretSubRef.current?.remove();
+
+        secretSubRef.current = device.monitorCharacteristicForService(
+            SERVICE_UUID,
+            RESP_UUID,
+            onResponseUpdate,
+        )
+        console.log('secretSubRef monitorResponseSecret2: ', secretSubRef.current)
+    }
+
 
 
     const readStateOnce = async (device: Device) => {
@@ -326,6 +416,7 @@ function useBLE(): BluetoothLowEnergyApi{
             //try{
                 // 1) subscribe notify
                 startStreamingService(device);//viene inviato anche dal 6 è corretto?
+                monitorResponseSecret(device);
 
                 // 2) read stato attuale (molto importante nel tuo firmware)
                 const initial = await readStateOnce(device);
@@ -365,6 +456,7 @@ function useBLE(): BluetoothLowEnergyApi{
         command,
         disconnectFromDevice,
         sendCommand,
+        sendString,
         sendStop,
         sendUp,
         sendDown,

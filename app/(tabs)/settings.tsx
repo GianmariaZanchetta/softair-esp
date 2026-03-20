@@ -6,7 +6,13 @@ import { useBle } from "@/useBleContext";
 
 export default function Index(){
 
+    const router = useRouter();
+
 const {disconnectFromDevice} = useBle()
+
+const adminRequestFunction=()=>{
+    router.push("/(tabs)/admin/adminLogin")
+}
 
     return(
         <View
@@ -48,7 +54,7 @@ const {disconnectFromDevice} = useBle()
                 <FlatList 
                     data={[
                         {key: 'Disconnetti ble device', func: disconnectFromDevice},
-                        {key: 'settings2', func: () => {}},
+                        {key: 'Admin settings', func: adminRequestFunction},
                         {key: 'settings3', func: () => {}},
                         {key: 'settings4', func: () => {}},
                         {key: 'settings5', func: () => {}},

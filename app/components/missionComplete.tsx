@@ -43,7 +43,7 @@ const style = StyleSheet.create({
     styleView:{
         flex: 1,
         
-        height: 357,
+        height: 257,
         width: 600,
         position: 'absolute',
         zIndex: 1,
