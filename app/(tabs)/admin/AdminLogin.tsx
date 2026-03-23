@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {View, StyleSheet, TextInput, Pressable, Text, Alert} from "react-native";
+import GoBack from "@/app/components/goBack";
 
 
 
@@ -11,8 +12,8 @@ export default function AdminLogin () {
     const [text, setText] = useState("")
 
     const verifyAdmin = () =>{
-        if (text === "123") {
-            router.push("/(tabs)/admin/controlEsp")
+        if (text === "123") {//psw: BucoModellista
+            router.replace("/(tabs)/admin/ControlEsp")
         } else {
             Alert.alert(
                 'Credenziali errate',
@@ -31,6 +32,7 @@ export default function AdminLogin () {
             <View
                 style={style.view}
             >
+                <GoBack />
 
                 <TextInput
                     style={style.textInput}

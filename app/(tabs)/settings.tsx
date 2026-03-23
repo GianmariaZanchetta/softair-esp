@@ -11,7 +11,7 @@ export default function Index(){
 const {disconnectFromDevice} = useBle()
 
 const adminRequestFunction=()=>{
-    router.push("/(tabs)/admin/adminLogin")
+    router.push("/(tabs)/admin/AdminLogin")
 }
 
     return(
@@ -39,6 +39,7 @@ const adminRequestFunction=()=>{
                         fontSize: 25,
                         fontWeight: 600,
                         marginTop: 0,
+                        marginBottom: 0,
                     }}
                 >Impostazioni</Text>
 
@@ -46,19 +47,22 @@ const adminRequestFunction=()=>{
 
             <View 
                 style={{
+                        alignItems: 'center',
                         marginTop: 0,
                         flex: 2,
+                        margin: 0,
                     }}
                 >
                 
                 <FlatList 
+                    style={{
+                        marginTop: '0%',
+                        width: '70%'
+                    }}
                     data={[
                         {key: 'Disconnetti ble device', func: disconnectFromDevice},
                         {key: 'Admin settings', func: adminRequestFunction},
-                        {key: 'settings3', func: () => {}},
-                        {key: 'settings4', func: () => {}},
-                        {key: 'settings5', func: () => {}},
-                        {key: 'settings6', func: () => {}},
+
                     ]}
                     renderItem={({item})=>
                         <Pressable

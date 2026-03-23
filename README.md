@@ -86,3 +86,6 @@ aggiungere i controlli: in ogni pagina deve dare errore se la esp si disconnette
  LOG  true
 
 penso che cambiare pagina con router sminchi la ricerca con il ble ma non riesco a trovare l'origine dell'errore
+
+
+aggiungere verifica connessione ble prima di inviare comandi admin
