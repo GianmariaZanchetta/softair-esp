@@ -12,7 +12,7 @@ import { useBle } from "@/useBleContext";
 
 export default function SecurityCode() {
 
-  const {connectedDevice, isReady} = useBle();
+  const {connectedDevice, isReady, sendString, verifiedEsp, pswAttempt, verifyPassword} = useBle();
 
   /*useEffect(()=>{
     connectToDevice
@@ -25,33 +25,40 @@ export default function SecurityCode() {
   const [text, onChangeText] = React.useState("")
   const [showModal, setShowModal] = React.useState(false)
   const [showGraphics, setShowGraphic] = React.useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  function testPassword(){
-    if (text==="123"){
-      if(connectedDevice && isReady){
-      console.log("correct psw")
-      router.push("./engageTarget")//sistemare l'alert si vede per mezzo secondo poi va sotto
-      }else{
-        Alert.alert(
-          'Dispositivo disconnesso',
-          'Credenziali corrette ma dispositivo disconnesso',
-          [{text: 'ok', onPress:()=>{router.replace('/')}}],
-          { cancelable: false },
-        )
-      }
 
-      /*setShowGraphic(true)  
-        const timerGraphics = setTimeout(()=>{
-          setShowGraphic(false)
-          router.push("./engageTarget");
-        }, 25000)*/
-
-      
-    } else{
-      console.log("wrong psw")
-      setShowModal(true)
-    }
+async function testPassword() {
+  if (!connectedDevice || !isReady) {
+    Alert.alert(
+      'Dispositivo disconnesso',
+      'Credenziali corrette ma dispositivo disconnesso',
+      [{ text: 'ok', onPress: () => router.replace('/') }],
+      { cancelable: false },
+    );
+    return;
   }
+
+  try {
+    setIsSubmitting(true);
+
+    const ok = await verifyPassword(text);
+
+    if (ok) {
+      router.push('./engageTarget');
+    } else {
+      setShowModal(true);
+    }
+  } catch (e) {
+    Alert.alert(
+      'Errore',
+      'Verifica password non riuscita'
+    );
+  } finally {
+    setIsSubmitting(false);
+  }
+}
+
 
   function retryPsw(){
     setShowModal(false)

@@ -17,14 +17,24 @@ const ChangeSecret: FC<AdminModalProps> = (props) => {
     const {closeModal, visible} = props
 
     const [code, setCode] = useState("")
-    const {connectedDevice, isReady} = useBle();
+    const {connectedDevice, isReady, sendString} = useBle();
     const router = useRouter()
 
     const sendNewCode = ()=>{
         if(code !== "") {
             if(connectedDevice && isReady){
-                
-
+                try{
+                    const codeToSend = `SET_SECRET:${code}`
+                    sendString(codeToSend)
+                } catch(e){
+                    console.error(e);
+                    Alert.alert(
+                        'Errore',
+                        `Errore durante l'invio del codice`,
+                        [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                        { cancelable: false },
+                    )
+                }
             } else {
                 Alert.alert(
                   'Dispositivo disconnesso',

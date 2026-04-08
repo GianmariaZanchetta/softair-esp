@@ -1,16 +1,25 @@
-import { View, Text, StyleSheet, Pressable, FlatList } from "react-native"
+import { View, Text, StyleSheet, Pressable, FlatList, Alert } from "react-native"
 import GoBack from "@/app/components/goBack"
 import { useState } from "react"
 import ChangeSecret from "./ChangeSecret"
 import { useBle } from "@/useBleContext"
+import { useRouter } from "expo-router";
 
 
 export default function ControlEsp() {
+    const router = useRouter()
 
     const [visibleModal, setVisibleModal] = useState(false)
-    const {connectedDevice, isReady} = useBle();
+    const {connectedDevice, isReady, sendString, sendUp, sendStop, sendDown} = useBle();
     
-
+    /*const alertDisconnected = 
+            Alert.alert(
+                'Dispositivo disconnesso',
+                'Dispositivo disconnesso',
+                [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                { cancelable: false },
+            )*/
+        
 
 
     function changeESPCode(){
@@ -22,19 +31,64 @@ export default function ControlEsp() {
     function resetSecret(){
         if(connectedDevice && isReady){
         //se collegata resetto il codice e restituisco alert se ho successo
-
+            try{
+                    const codeToSend = `RESET_SECRET:TRUE`
+                    sendString(codeToSend)
+                } catch(e){
+                    console.error(e);
+                    Alert.alert(
+                        'Errore',
+                        `Errore durante l'invio del codice`,
+                        [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                        { cancelable: false },
+                    )
+                }
+        } else {
+            Alert.alert(
+                'Dispositivo disconnesso',
+                'Dispositivo disconnesso',
+                [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                { cancelable: false },
+            )
         }
     }
 
     function lowerActuator () {
         if(connectedDevice && isReady){
-
+            sendDown()
+        } else {
+            Alert.alert(
+                'Dispositivo disconnesso',
+                'Dispositivo disconnesso',
+                [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                { cancelable: false },
+            )
         }
     }
 
     function riseActuator () {
         if(connectedDevice && isReady){
+            sendUp()
+        } else {
+            Alert.alert(
+                'Dispositivo disconnesso',
+                'Dispositivo disconnesso',
+                [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                { cancelable: false },
+            )
+        }
+    }
 
+    function stopActuator() {
+        if(connectedDevice && isReady){
+            sendStop()
+        } else {
+            Alert.alert(
+                'Dispositivo disconnesso',
+                'Dispositivo disconnesso',
+                [{text: 'ok', onPress:()=>{router.replace('/')}}],
+                { cancelable: false },
+            )
         }
     }
 
@@ -73,6 +127,7 @@ export default function ControlEsp() {
                         {key: 'Resetta codice ESP', func: resetSecret},
                         {key: 'Abbassa attuatore', func: lowerActuator},
                         {key: 'Alza attuatore', func: riseActuator},
+                        {key: 'Ferma attuatore', func: stopActuator},
 
                     ]}
                     renderItem={({item})=>

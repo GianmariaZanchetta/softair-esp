@@ -26,6 +26,10 @@ interface BluetoothLowEnergyApi{
     sendUp: () => Promise<void>;
     sendDown: () => Promise<void>;
     isReady: boolean;
+    verifiedEsp: boolean | null;
+    pswAttempt: number;
+    verifyPassword: (password: string) => Promise<boolean>;
+
 }
 
 function useBLE(): BluetoothLowEnergyApi{
@@ -42,6 +46,15 @@ function useBLE(): BluetoothLowEnergyApi{
     const [command, setCommand] = useState<string>('stop')
     const [deviceState, setDeviceState]= useState<string | null>(null);
     const [isReady, setIsReady] = useState<boolean>(false)
+    const [verifiedEsp, setVerifiedEsp] = useState<boolean | null>(null)
+    const [pswAttempt, setPswAttempt] = useState<number>(0);
+
+    type PendingVerify = {
+        resolve: (value: boolean) => void;
+        reject: (reason?: unknown) => void;
+        timeoutId: ReturnType<typeof setTimeout>;
+    };
+    const pendingVerifyRef = useRef<PendingVerify | null>(null);
 
 
     const lastStateAtRef = useRef<number>(0)
@@ -49,6 +62,12 @@ function useBLE(): BluetoothLowEnergyApi{
     const secretSubRef = useRef<Subscription | null>(null)
 
     const connectedDeviceRef = useRef<Device | null>(null)
+
+    /*const verifyPendingRef = useRef<{
+        resolve: (ok: boolean) => void;
+        reject: (e: Error) => void;
+        timeoutId: ReturnType<typeof setTimeout>;
+    } | null>(null)*/
 
     const decodeB64 = (b64: string) =>Buffer.from(b64, 'base64').toString('utf-8');
     const encodeB64 = (txt: string) =>Buffer.from(txt, 'utf-8').toString('base64')
@@ -215,10 +234,45 @@ function useBLE(): BluetoothLowEnergyApi{
 
 
 
+    const verifyPassword = async (password: string, timeoutMs = 5000): Promise<boolean> => {
+        const dev = connectedDeviceRef.current;
+
+        if (!dev || !isReady) {
+            throw new Error("DEVICE_NOT_READY");
+        }
+
+        if (pendingVerifyRef.current) {
+            throw new Error("VERIFY_ALREADY_PENDING");
+        }
+
+        return new Promise<boolean>(async (resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+            pendingVerifyRef.current = null;
+            reject(new Error("VERIFY_TIMEOUT"));
+            }, timeoutMs);
+
+            pendingVerifyRef.current = {
+            resolve,
+            reject,
+            timeoutId,
+            };
+
+            try {
+            await sendString(`VERIFY_SECRET:${password}`);
+            } catch (err) {
+            clearTimeout(timeoutId);
+            pendingVerifyRef.current = null;
+            reject(err);
+            }
+        });
+    };
+
+
+
     const onResponseUpdate = (
         error: BleError | null,
         characteristic: Characteristic | null
-    ) =>{
+    ) => {
         console.log('11')
         console.log("NOTIFY from:", characteristic?.serviceUUID, characteristic?.uuid);
         console.log("RAW:", characteristic?.value);
@@ -227,6 +281,13 @@ function useBLE(): BluetoothLowEnergyApi{
         if(error){
             console.log('1 onResponseUpdate: ', error)
             //alert('onResponseUpdate alert ')
+
+            const pending = pendingVerifyRef.current;
+                if (pending) {
+                clearTimeout(pending.timeoutId);
+                pendingVerifyRef.current = null;
+                pending.reject(error);
+            }
             
             setIsReady(false);
             Alert.alert(
@@ -239,14 +300,54 @@ function useBLE(): BluetoothLowEnergyApi{
                 {cancelable: false},
             )
             return
-        } else if (!characteristic?.value) {
+        } 
+        if (!characteristic?.value) {
             console.log('onResponseUpdate no data recived')
             return
         }
         const rawData = decodeB64(characteristic.value)
         console.log('rawData: ', rawData)
+
+        /*if (rawData === "VERIFY_OK" || "VERIFY_FALSE"){//togliere verify false
+            const ok = rawData === "VERIFY_OK"
+
+            if(verifyPendingRef.current) {
+                clearTimeout(verifyPendingRef.current.timeoutId);
+                verifyPendingRef.current.resolve(ok);
+                verifyPendingRef.current = null;
+            }
+            return
+        }*/
+
+
+
+        if (rawData !== "VERIFY_OK" && rawData !== "VERIFY_FALSE") return
+            const ok = rawData === "VERIFY_OK";
+
+            setVerifiedEsp(ok);
+            setPswAttempt(prev => prev + 1);
+
+            const pending = pendingVerifyRef.current;
+            if (pending) {
+                clearTimeout(pending.timeoutId);
+                pendingVerifyRef.current = null;
+                pending.resolve(ok);
+            }
+
+        /*if(rawData === "VERIFY_OK") {
+            setPswAttempt(prev => prev+1)
+            console.log("pswAttempt: ", pswAttempt)
+            setVerifiedEsp(true)
+            console.log("verificato psw")
+        } else {
+            setPswAttempt(prev => prev+1)
+            console.log("pswAttempt: ", pswAttempt)
+            setVerifiedEsp(false)
+            console.log("psw errata")
+        }*/
         //-----------------------------------------------------------------------
     }
+
 
     /*const startStreamingData = async (device: Device) =>{
         if (device) {
@@ -264,18 +365,25 @@ function useBLE(): BluetoothLowEnergyApi{
         console.log('4')
             stateSubRef.current?.remove();
             stateSubRef.current = null;
+
             secretSubRef.current?.remove();
             stateSubRef.current = null;
 
-        if(connectedDevice){
+        const pending = pendingVerifyRef.current;
+        if (pending) {
+            clearTimeout(pending.timeoutId);
+            pendingVerifyRef.current = null;
+            pending.reject(new Error("DEVICE_DISCONNECTED"));
+        }
+
+        if (connectedDevice) {
             bleManager.cancelDeviceConnection(connectedDevice.id);
             connectedDeviceRef.current = null;
             setConnectedDevice(null);
-            setCommand('stop')
+            setCommand('stop');
             setIsReady(false);
             setDeviceState(null);
-            //alert('device disconnesso')
-            alertToHome()
+            alertToHome();
         }
     }
 
@@ -461,6 +569,9 @@ function useBLE(): BluetoothLowEnergyApi{
         sendUp,
         sendDown,
         isReady,
+        verifiedEsp,
+        pswAttempt,
+        verifyPassword,
     };
 }
 
