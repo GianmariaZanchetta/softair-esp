@@ -12,7 +12,7 @@ export default function AdminLogin () {
     const [text, setText] = useState("")
 
     const verifyAdmin = () =>{
-        if (text === "123") {//psw: BucoModellista
+        if (text === "BucoModellista02") {//psw: BucoModellista02
             router.replace("/(tabs)/admin/ControlEsp")
         } else {
             Alert.alert(
