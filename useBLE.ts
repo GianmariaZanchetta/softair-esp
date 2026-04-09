@@ -196,6 +196,50 @@ function useBLE(): BluetoothLowEnergyApi{
                 }
             };
 
+
+    function checkKonownMessages(rawData: string): void {
+        console.log("rawData messages: ", rawData)
+        if(rawData === 'RESET_SECRET:TRUE') {
+            Alert.alert(
+                'Codice segreto ripristinato',
+                'Adesso puoi inserire il codice di default',
+                [{text: 'ok'}],
+                {cancelable: false}
+            )
+        } else if(rawData.includes('SET_SECRET:')){
+            Alert.alert(
+                'Codice segreto modificato',
+                'Adesso puoi inserire il tuo codice',
+                [{text: 'ok'}],
+                {cancelable: false}
+            )  
+        }  
+        //da abilitare solo in debug(altrimenti escono a fine game)
+        /* else if(rawData === 'CMD:UP') {
+            Alert.alert(
+                'Comando inviato correttamente',
+                'Allungo attuatore',
+                [{text: 'ok'}],
+                {cancelable: false}
+            )
+        } else if(rawData === 'CMD:DOWN') {
+            Alert.alert(
+                'Comando inviato correttamente',
+                'Accorcio attuatore',
+                [{text: 'ok'}],
+                {cancelable: false}
+            )
+        } else if(rawData === 'CMD:STOP') {
+            Alert.alert(
+                'Comando inviato correttamente',
+                'Fermo attuatore',
+                [{text: 'ok'}],
+                {cancelable: false}
+            )
+        } */
+    }
+
+
     const onStateUpdate = (
         error: BleError | null,
         characteristic: Characteristic | null
@@ -229,6 +273,7 @@ function useBLE(): BluetoothLowEnergyApi{
         setIsReady(true)
         lastStateAtRef.current = Date.now()
         console.log('rawData: ', rawData)
+        checkKonownMessages(rawData);
     }
 
 

@@ -34,6 +34,13 @@ export default function ControlEsp() {
             try{
                     const codeToSend = `RESET_SECRET:TRUE`
                     sendString(codeToSend)
+                    //spostato su useBLE, così verifico che la risposta arrivi dalla esp, è attendibile
+                    /*Alert.alert(
+                        'Codice segreto ripristinato',
+                        'Adesso puoi inserire il codice di default',
+                        [{text: 'ok'}],
+                        {cancelable: false}
+                    )*/
                 } catch(e){
                     console.error(e);
                     Alert.alert(
@@ -130,12 +137,16 @@ export default function ControlEsp() {
                         {key: 'Ferma attuatore', func: stopActuator},
 
                     ]}
-                    renderItem={({item})=>
+                    renderItem={({item, index})=>
                         <Pressable
                             style={{
                                 width: '100%',
                                 borderColor: 'black',
                                 borderWidth: 1,
+                                borderBottomWidth: 1,
+                                borderTopWidth: index === 0 ? 1 : 0,
+                                
+                                paddingTop: 0,
                             }}
                             onPress={item.func}
                         >
@@ -150,6 +161,7 @@ export default function ControlEsp() {
                             >{item.key}</Text>
                         </Pressable>
                     } />
+
         </View>
     </>
 )

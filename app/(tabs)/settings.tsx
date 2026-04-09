@@ -64,12 +64,13 @@ const adminRequestFunction=()=>{
                         {key: 'Admin settings', func: adminRequestFunction},
 
                     ]}
-                    renderItem={({item})=>
+                    renderItem={({item, index})=>
                         <Pressable
                             style={{
                                 width: '100%',
                                 borderColor: 'black',
                                 borderWidth: 1,
+                                borderTopWidth: index === 0 ? 1 : 0,
                             }}
                             onPress={item.func}
                         >
