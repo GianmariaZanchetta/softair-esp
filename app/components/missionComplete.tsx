@@ -1,15 +1,45 @@
 import {View, StyleSheet, Text} from "react-native"
 import React, { useEffect } from "react"
+import { useAudioPlayer } from 'expo-audio';
+
+const audioSource = require('../../assets/alarm.wav')
+
 
 export default function MissionComplete({defuzeOrLounch}: {defuzeOrLounch: string}) {
 
-
+    const player = useAudioPlayer(audioSource);
     const [winningMessage, setWinningMessage] = React.useState(defuzeOrLounch)
     const [isAreaSafe, setIsAreaSafe] =React.useState(true)
+    const [audio, setAudio] = React.useState(false)
     useEffect(()=>{
         if(winningMessage==='disarmo'){setIsAreaSafe(true)} else {setIsAreaSafe(false)}
     }, [isAreaSafe])
+
+    useEffect(()=>{
+        if(!winningMessage) return
+        const time = setInterval(()=>{
+        setAudio(true)
+        })
+
+        setTimeout(()=>{
+            clearInterval(time)
+            setAudio(false)
+        }, 120000)//l'audio è un loop infinito, modificare il tempo in ms per decidere la lunghezza
+
+    }, [winningMessage])
     
+    useEffect(()=>{
+        if(!winningMessage) return
+        if(audio){
+            player.loop=true;
+            player.seekTo(0);
+            player.play();  
+        }
+        if(!audio){
+            player.pause()
+        }
+
+    }, [audio])
 
 
     return(

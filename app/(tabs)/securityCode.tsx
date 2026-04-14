@@ -7,12 +7,16 @@ import WrongCodeModal from "../components/wrongCodeModal";
 import CorrectCodeModal from "../components/correctCodeModal";
 import IsEspConnected from '../components/isEspConnected'
 import { useBle } from "@/useBleContext";
+import { useAudioPlayer } from 'expo-audio';
 
+
+const audioSource = require('../../assets/key.wav')
 
 
 export default function SecurityCode() {
 
   const {connectedDevice, isReady, sendString, verifiedEsp, pswAttempt, verifyPassword} = useBle();
+  const player = useAudioPlayer(audioSource);
 
   /*useEffect(()=>{
     connectToDevice
@@ -27,6 +31,10 @@ export default function SecurityCode() {
   const [showGraphics, setShowGraphic] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(()=>{
+    player.seekTo(0);
+    player.play();  
+  }, [text])
 
 async function testPassword() {
   if (!connectedDevice || !isReady) {
