@@ -1,75 +1,26 @@
-import { Pressable, Text, View, TextInput, Button, StyleSheet } from "react-native";
+import { Pressable, Text, View, TextInput, Button, StyleSheet, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
 import SettingsIco from "./components/settings"
-import DeviceModal from "./components/deviceSelectModal"
 
-import { useBle } from "@/useBleContext";
 
 
 
 export default function Index() {
 
-  const {
-    scanForPeripherals, 
-    requestPermissions,
-    allDevices,
-    connectToDevice,
-    connectedDevice,
-    isReady,
-  } = useBle();
-
-  const scanForDevices = async () => {
-    const isPermissionsEnabled = await requestPermissions();
-    if (isPermissionsEnabled) {
-      //console.log(isPermissionsEnabled)
-      scanForPeripherals();
-    }
-  };
 
   const router = useRouter()
 
-  const [isConnected, setIsConnected] = React.useState(true)//dovrebbe essere false ma senza esp uso true
-  const [showModal, setShowModal] = React.useState<boolean>(false)
 
-  console.log(connectDevice)
-  async function connectDevice(){
-    const isPermissionsEnabled = await requestPermissions();
-    if(isPermissionsEnabled){
-      if(connectedDevice && await isReady){
-        setShowModal(false)
-        router.push("./(tabs)/securityCode")
-
-      } else {
-            console.log(connectToDevice)
-            scanForDevices()
-            setShowModal(true)
-      }
-    } 
-  }
-
-
-    useEffect(()=>{
-      async function connectDevice(){
-        const isPermissionsEnabled = await requestPermissions();
-        if(isPermissionsEnabled){
-          if(connectedDevice && await isReady){
-            setShowModal(false)
-            router.push("/(tabs)/securityCode")
-            console.log('mandato')
-          } else {
-            console.log(connectToDevice)
-            scanForDevices()
-            setShowModal(true)
-          }
-        } 
-      }
-      connectDevice()
-      console.log('eseguito')
-    }, [connectedDevice, isReady])
-  
-
+    function missileGame (){
+      console.log("missile game selected")
+      router.push("/(tabs)/missileGame")
+    }
+    function alienGame (){
+      console.log("alien game selected")
+      router.push("/(tabs)/alienGame")
+    }
 
   return (
     <View
@@ -81,15 +32,6 @@ export default function Index() {
       }}
     >
 
-      <SettingsIco />
-
-      <DeviceModal  
-        closeModal={()=>setShowModal(false)}
-        visible={showModal}
-        connectToPeripheral={connectToDevice}
-        devices={allDevices}
-      //è una prova
-      /> 
 
       <Text
         style={{
@@ -100,38 +42,43 @@ export default function Index() {
           textAlign: "center",
 
         }}
-      >Connetti il Dispositivo</Text>
-      
+      >Modalita operativa</Text>
 
-      <Pressable
+      <FlatList 
         style={{
-          width: 200,
-          height: 60,
-          alignItems: "center",
-          backgroundColor: "rgb(44, 44, 44)",
-          //borderRadius: 10,
-          marginTop: 50,
-          borderColor: "rgb(255, 255, 255)",
-          borderWidth: 1,
+            marginTop: '3%',
+            width: '70%'
         }}
-        onPress={connectDevice}
-      >
-        <View pointerEvents="none" style={[style.angle, style.tl]}></View>
-        <View pointerEvents="none" style={[style.angle, style.tr]}></View>
-        <View pointerEvents="none" style={[style.angle, style.bl]}></View>
-        <View pointerEvents="none" style={[style.angle, style.br]}></View>
-        <Text
-          style={{
-            fontSize: 30,
-            color: "rgb(255, 255, 255)",
-            marginTop: 17,
-            fontWeight: 600,
-            fontFamily: 'CallOfOpsDuty',
-          }}
-        >
-          Cerca
-        </Text>
-      </Pressable>
+        data={[
+            {key: 'Lancio missile', func: missileGame},
+            {key: 'Codice alieno', func: alienGame},
+        ]}
+        renderItem={({item, index})=>
+            <Pressable
+                style={{
+                    width: '100%',
+                    borderColor: 'black',
+                    borderWidth: 1,
+                    borderTopWidth: index === 0 ? 1 : 0,
+                }}
+                onPress={item.func}
+            >
+            
+                <Text
+                style={{
+                    color: 'white',
+                    fontSize: 15,
+                    margin: 15,
+                    marginLeft: 30,
+                }}
+                >{item.key}</Text>
+            </Pressable>
+            
+        }
+                      />
+
+
+
 
 
     </View>
