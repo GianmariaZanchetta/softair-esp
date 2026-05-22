@@ -1,11 +1,14 @@
 import { Pressable, Text, View, TextInput, Button, FlatList, StyleSheet } from "react-native";
 import React, { useEffect, useState } from "react";
-import * as data from '../../assets/fonts/alienFont.js'
+import * as data from '../../../assets/fonts/alienFont.js'
 import Svg, {Path} from 'react-native-svg';
 import { useRouter } from "expo-router";
-import SettingIcoAlienGame from "../components/settings/SettingIcoAlienGame";
 import * as SecureStore from 'expo-secure-store';
 
+
+async function save(key:any, value:any) {
+  await SecureStore.setItemAsync(key, value);
+}
 
 
 
@@ -24,15 +27,10 @@ export default function alienGame() {
     </View>
     );
 
-    async function checkCode(){
-        let result = await SecureStore.getItemAsync("alienGameKey");
-        if(text === result){
-            console.log("code correct")
-            onChangeText("")
-            //router.push()
-        } else {
-            console.log("Wrong code")
-        }
+    async function setNewCode(){
+        await save("alienGameKey", text);
+        console.log("codice cambiato correttamente")
+        await router.replace("/(tabs)/alienGame")
     }
 
 
@@ -48,14 +46,13 @@ export default function alienGame() {
                       textAlign: "center",
             
                     }}>
-                Inserisci il codice
+                Inserisci il NUOVO codice
             </Text>
 
-            <SettingIcoAlienGame />
 
             <View style={{flexDirection: 'row'}}>
                 <Pressable
-                    onPress={checkCode}
+                    onPress={setNewCode}
                     style={{
                         backgroundColor: '#55bd00',
                         marginRight: 60,

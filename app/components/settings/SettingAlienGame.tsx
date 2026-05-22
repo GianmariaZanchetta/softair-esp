@@ -1,22 +1,19 @@
 import { Pressable, Text, View, TextInput, Button, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import GoBack from "../components/goBack";
-import { useBle } from "@/useBleContext";
 
 export default function Index(){
 
     const router = useRouter();
 
-const {disconnectFromDevice} = useBle()
-
-const adminRequestFunction=()=>{
-    router.push("/(tabs)/admin/AdminLogin")
-}
-
-    function getBack (){
-        router.replace("/")
+    function adminRequestFunction(){
+        router.replace("/(tabs)/admin/AlienGameAdminLogin")
     }
+    
+    function getBack (){
+            console.log("alien game")
+            router.replace("/(tabs)/alienGame")
+        }
 
     return(
         <View
@@ -36,24 +33,25 @@ const adminRequestFunction=()=>{
             >
 
                 <Pressable
-                onPress={getBack}
-                  style={{
-                    position: "absolute",
-                    top: 20,
-                    left: 12,
-                    padding: 10,
-                    borderRadius: 1,
-                  }}
-                  hitSlop={10}
-            >
+                    onPress={getBack}
+                    style={{
+                        position: "absolute",
+                        top: 20,
+                        left: 12,
+                        padding: 10,
+                        borderRadius: 1,
+                    }}
+                    hitSlop={10}
+                >
 
-                <Ionicons name="arrow-back-outline" size={22} 
-                style={{
-                  color: "white",
-                }}
-                />
-              
-        </Pressable>
+                    <Ionicons name="arrow-back-outline" size={22} 
+                        style={{
+                        color: "white",
+                        }}
+                    />
+                
+                </Pressable>
+    
 
                 <Text
                     style={{
@@ -82,7 +80,6 @@ const adminRequestFunction=()=>{
                         width: '70%'
                     }}
                     data={[
-                        {key: 'Disconnetti ble device', func: disconnectFromDevice},
                         {key: 'Admin settings', func: adminRequestFunction},
 
                     ]}

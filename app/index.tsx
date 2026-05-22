@@ -15,11 +15,11 @@ export default function Index() {
 
     function missileGame (){
       console.log("missile game selected")
-      router.push("/(tabs)/missileGame")
+      router.replace("/(tabs)/missileGame")
     }
     function alienGame (){
       console.log("alien game selected")
-      router.push("/(tabs)/alienGame")
+      router.replace("/(tabs)/alienGame")
     }
 
   return (
