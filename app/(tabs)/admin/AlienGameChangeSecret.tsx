@@ -17,8 +17,10 @@ export default function alienGame() {
 
     const [text, onChangeText] = React.useState("")
 
-    const DATA = data.alienFont
-
+    const alienNumbers = data.alienNumbers
+    const alienFontFristLine = data.alienFontFristLine
+    const alienFontSecondLine = data.alienFontSecondLine
+    const alienFontThirdLine = data.alienFontThirdLine
     type ItemProps = {title: string};
 
     const Item = ({title}: ItemProps) => (
@@ -90,7 +92,8 @@ export default function alienGame() {
                             borderColor: "rgb(255, 255, 255)",
                             color: 'white',
                             textAlign: "center",
-                            fontSize: 20,
+                            fontFamily: "predator",
+                            fontSize: 25,
                             backgroundColor: 'rgb(15, 15, 15)',
                             //marginLeft: 220,
                         }}
@@ -133,61 +136,140 @@ export default function alienGame() {
 
 
             <FlatList
-                horizontal={false}
-                style={[styles.flatList]}
-                data={DATA}
-                numColumns={9}
-                contentContainerStyle={{
-                    alignItems: 'center',
-                    //borderColor: "red",
-                    //borderWidth: 1,
-                    width: 600,
-                    height: 205,
-                    marginTop: 30,
-                    
-                }}
-                renderItem={({item}) => 
-                    <Pressable
-                     onPress={()=>{onChangeText(text + item.id)}}
-                    >
-                        <Item 
-                            title={item.title}
-                            
+                            horizontal={true}
+                            style={{
+                                height: 0,
+                            }}
+                            data={alienNumbers}
+                            contentContainerStyle={{
+                                
+                                alignItems: 'center',
+                                width: 830,
+                                marginTop: 20,
+                                paddingBottom: 0,
+                                height: 50,
+                            }}
+                            renderItem={({item}) => 
+                                <Pressable
+                                 onPress={()=>{onChangeText(text + item.id)}}
+                                >
+                                    <Item 
+                                        title={item.title}
+                                    />
+                                </Pressable>}
+                            keyExtractor={item => item.id}
                         />
-                    </Pressable>}
-                keyExtractor={item => item.id}
-            />
-
-
-        </View>
-    )
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "rgb(56, 56, 56)",
-    margin: 0,
-    padding: 0,  
-    alignItems: "center",
-    textAlign: "center",
-    flexGrow: 1,
-    justifyContent: "center",
-    
-  },
-  flatList: {
-    
-  },
-  item: {
-    
-    backgroundColor: '#70c08900',
-    padding: 10,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    height: 60
-  },
-  title: {
-    fontSize: 32,
-    color: '#ffffff',
-  },
-});
+            
+            
+                        <FlatList
+                            horizontal={true}
+                            style={{
+                                height: 0,
+                            }}
+                            data={alienFontFristLine}
+                            contentContainerStyle={{
+                                alignItems: 'center',
+                                width: 830,
+                                marginTop: 12,
+                                paddingBottom: 0,
+                                height: 50,
+                            }}
+                            renderItem={({item}) => 
+                                <Pressable
+                                 onPress={()=>{onChangeText(text + item.id)}}
+                                >
+                                    <Item 
+                                        title={item.title}
+                                        
+                                    />
+                                </Pressable>}
+                            keyExtractor={item => item.id}
+                        />
+            
+            
+                        <FlatList
+                            horizontal={true}
+                            style={{
+                                height: 0,
+                            }}
+                            data={alienFontSecondLine}
+                            contentContainerStyle={{
+                                alignItems: 'center',
+                                width: 750,
+                                marginTop: 10,
+                                paddingBottom: 0,
+                                height: 50,
+                            }}
+                            renderItem={({item}) => 
+                                <Pressable
+                                 onPress={()=>{onChangeText(text + item.id)}}
+                                >
+                                    <Item 
+                                        title={item.title}
+                                        
+                                    />
+                                </Pressable>}
+                            keyExtractor={item => item.id}
+                        />
+            
+            
+            
+                        <FlatList
+                            horizontal={true}
+                            style={{
+                                height: 0,
+                            }}
+                            data={alienFontThirdLine}
+                            contentContainerStyle={{
+                                alignItems: 'center',
+                                width: 550,
+                                marginTop: 8,
+                                paddingBottom: 0,
+                                height: 50,
+                            }}
+                            renderItem={({item}) => 
+                                <Pressable
+                                 onPress={()=>{onChangeText(text + item.id)}}
+                                >
+                                    <Item 
+                                        title={item.title}
+                                        
+                                    />
+                                </Pressable>}
+                            keyExtractor={item => item.id}
+                        />
+            
+            
+                       
+            
+                    </View>
+                )
+            }
+            
+            const styles = StyleSheet.create({
+              container: {
+                flex: 1,
+                backgroundColor: "rgb(56, 56, 56)",
+                margin: 0,
+                padding: 0,  
+                alignItems: "center",
+                
+              },
+              flatList: {
+                textAlign: "center"
+              },
+              item: {
+                
+                backgroundColor: '#70c08900',
+                paddingHorizontal: 10,
+                paddingVertical: 0,
+                marginHorizontal: 13,
+                height: 45
+              },
+              title: {
+                fontFamily: 'predator',
+                fontSize: 34,
+                //fontWeight: 500,
+                color: '#ffffff',
+              },
+            });

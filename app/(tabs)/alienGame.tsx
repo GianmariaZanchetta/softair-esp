@@ -5,16 +5,26 @@ import Svg, {Path} from 'react-native-svg';
 import { useRouter } from "expo-router";
 import SettingIcoAlienGame from "../components/settings/SettingIcoAlienGame";
 import * as SecureStore from 'expo-secure-store';
+import { useFonts } from 'expo-font';
 
 
 
 
 export default function alienGame() {
+
+    const [fontsLoaded] = useFonts({
+        predator: require('../../assets/fonts/predator.ttf'),
+    });
+
     const router = useRouter()
 
     const [text, onChangeText] = React.useState("")
 
-    const DATA = data.alienFont
+    const alienNumbers = data.alienNumbers
+    const alienFontFristLine = data.alienFontFristLine
+    const alienFontSecondLine = data.alienFontSecondLine
+    const alienFontThirdLine = data.alienFontThirdLine
+
 
     type ItemProps = {title: string};
 
@@ -93,7 +103,8 @@ export default function alienGame() {
                             borderColor: "rgb(255, 255, 255)",
                             color: 'white',
                             textAlign: "center",
-                            fontSize: 20,
+                            fontFamily: 'predator',
+                            fontSize: 25,
                             backgroundColor: 'rgb(15, 15, 15)',
                             //marginLeft: 220,
                         }}
@@ -136,18 +147,43 @@ export default function alienGame() {
 
 
             <FlatList
-                horizontal={false}
-                style={[styles.flatList]}
-                data={DATA}
-                numColumns={9}
+                horizontal={true}
+                style={{
+                    height: 0,
+                }}
+                data={alienNumbers}
+                contentContainerStyle={{
+                    
+                    alignItems: 'center',
+                    width: 830,
+                    marginTop: 20,
+                    paddingBottom: 0,
+                    height: 50,
+                }}
+                renderItem={({item}) => 
+                    <Pressable
+                     onPress={()=>{onChangeText(text + item.id)}}
+                    >
+                        <Item 
+                            title={item.title}
+                        />
+                    </Pressable>}
+                keyExtractor={item => item.id}
+            />
+
+
+            <FlatList
+                horizontal={true}
+                style={{
+                    height: 0,
+                }}
+                data={alienFontFristLine}
                 contentContainerStyle={{
                     alignItems: 'center',
-                    //borderColor: "red",
-                    //borderWidth: 1,
-                    width: 600,
-                    height: 205,
-                    marginTop: 30,
-                    
+                    width: 830,
+                    marginTop: 12,
+                    paddingBottom: 0,
+                    height: 50,
                 }}
                 renderItem={({item}) => 
                     <Pressable
@@ -162,6 +198,61 @@ export default function alienGame() {
             />
 
 
+            <FlatList
+                horizontal={true}
+                style={{
+                    height: 0,
+                }}
+                data={alienFontSecondLine}
+                contentContainerStyle={{
+                    alignItems: 'center',
+                    width: 750,
+                    marginTop: 10,
+                    paddingBottom: 0,
+                    height: 50,
+                }}
+                renderItem={({item}) => 
+                    <Pressable
+                     onPress={()=>{onChangeText(text + item.id)}}
+                    >
+                        <Item 
+                            title={item.title}
+                            
+                        />
+                    </Pressable>}
+                keyExtractor={item => item.id}
+            />
+
+
+
+            <FlatList
+                horizontal={true}
+                style={{
+                    height: 0,
+                }}
+                data={alienFontThirdLine}
+                contentContainerStyle={{
+                    alignItems: 'center',
+                    width: 550,
+                    marginTop: 8,
+                    paddingBottom: 0,
+                    height: 50,
+                }}
+                renderItem={({item}) => 
+                    <Pressable
+                     onPress={()=>{onChangeText(text + item.id)}}
+                    >
+                        <Item 
+                            title={item.title}
+                            
+                        />
+                    </Pressable>}
+                keyExtractor={item => item.id}
+            />
+
+
+           
+
         </View>
     )
 }
@@ -173,24 +264,23 @@ const styles = StyleSheet.create({
     margin: 0,
     padding: 0,  
     alignItems: "center",
-    textAlign: "center",
-    flexGrow: 1,
-    justifyContent: "center",
     
   },
   flatList: {
-    
+    textAlign: "center"
   },
   item: {
     
     backgroundColor: '#70c08900',
-    padding: 10,
-    marginVertical: 4,
-    marginHorizontal: 16,
-    height: 60
+    paddingHorizontal: 10,
+    paddingVertical: 0,
+    marginHorizontal: 13,
+    height: 45
   },
   title: {
-    fontSize: 32,
+    fontFamily: 'predator',
+    fontSize: 34,
+    //fontWeight: 500,
     color: '#ffffff',
   },
 });

@@ -15,6 +15,7 @@ export default function RootLayout() {
   
   const [loaded] = useFonts({
     CallOfOpsDuty: require("../assets/fonts/CallOfOpsDuty.otf"),
+    
   });
 
   if (!loaded) return null;
