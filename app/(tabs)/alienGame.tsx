@@ -6,20 +6,27 @@ import { useRouter } from "expo-router";
 import SettingIcoAlienGame from "../components/settings/SettingIcoAlienGame";
 import * as SecureStore from 'expo-secure-store';
 import { useFonts } from 'expo-font';
-
-
+import AlienGameMissionComplete from "../components/AlienGameMissionComplete";
 
 
 export default function alienGame() {
+    const router = useRouter()
 
     const [fontsLoaded] = useFonts({
         predator: require('../../assets/fonts/predator.ttf'),
     });
 
-    const router = useRouter()
-
     const [text, onChangeText] = React.useState("")
 
+    const [showModal, setShowModal] = React.useState(false)
+
+    const [endGame, setEndGame] = React.useState(false)
+
+    if(!fontsLoaded) {
+        return null
+    }
+
+    
     const alienNumbers = data.alienNumbers
     const alienFontFristLine = data.alienFontFristLine
     const alienFontSecondLine = data.alienFontSecondLine
@@ -39,9 +46,10 @@ export default function alienGame() {
         if(text === result){
             console.log("code correct")
             onChangeText("")
-            //router.push()
+            setEndGame(true)
         } else {
             console.log("Wrong code")
+            setShowModal(true)
         }
     }
 
@@ -49,6 +57,63 @@ export default function alienGame() {
     return(
         <View
             style={styles.container}>
+
+            {endGame &&(<AlienGameMissionComplete />)}
+            
+            {showModal && (<View
+                style={{
+                    flex: 1,
+                    alignItems: "center",
+                    position: "absolute",
+                    backgroundColor: 'rgb(27, 27, 27)',
+                    height: 170,
+                    width: 450,
+                    marginTop: 110,
+                    zIndex: 1,
+                    //borderRadius: 8,
+                    borderColor: 'rgb(255, 255, 255)',
+                    borderWidth: 1,
+                }}
+                
+            >
+                <Text
+                    style={{
+                        color: 'rgb(255,255,255)',
+                        fontSize: 40,
+                        fontFamily: 'CallOfOpsDuty',
+                        marginTop: 10,
+                    }}
+                >Codice Errato!</Text>
+    
+                <View
+                    style={{
+                        flexDirection: 'row',
+                    }}
+                >
+    
+                    <Pressable
+                        style={styles.styleViewRetry}
+                        onPress={()=>{setShowModal(false)}}
+                    >
+                        <View pointerEvents="none" style={[styles.angle, styles.tl]}></View>
+                        <View pointerEvents="none" style={[styles.angle, styles.tr]}></View>
+                        <View pointerEvents="none" style={[styles.angle, styles.bl]}></View>
+                        <View pointerEvents="none" style={[styles.angle, styles.br]}></View>
+    
+                        <Text
+                            style={styles.styleText}
+                        >Riprova</Text>
+                    </Pressable>
+    
+                </View>
+    
+            </View>)}
+
+
+
+
+
+
             <Text
                 style={{
                       marginTop: 40,
@@ -95,7 +160,7 @@ export default function alienGame() {
                 <TextInput
                         style={{
                             height: 45,
-                            width: 210,
+                            width: 280,
                             marginTop: 20,
                             borderWidth: 1,
                             padding: 10,
@@ -146,6 +211,7 @@ export default function alienGame() {
             </View>
 
 
+            
             <FlatList
                 horizontal={true}
                 style={{
@@ -263,11 +329,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(56, 56, 56)",
     margin: 0,
     padding: 0,  
-    alignItems: "center",
-    
+    alignItems: 'center',
+    alignContent: 'center'
   },
   flatList: {
-    textAlign: "center"
+    textAlign: "center",
+    alignItems: 'center',
+    
   },
   item: {
     
@@ -283,4 +351,46 @@ const styles = StyleSheet.create({
     //fontWeight: 500,
     color: '#ffffff',
   },
+  styleViewAbort: {
+        backgroundColor: 'rgb(63, 134, 30)',
+        width: 150,
+        textAlign:'center',
+        height: 50,
+        margin: 30,
+        borderWidth: 1,
+        borderColor: 'rgb(255, 255, 255)'
+    },
+    styleViewRetry: {
+        backgroundColor: 'rgb(179, 155, 19)',
+        width: 150,
+        textAlign:'center',
+        height: 50,
+        margin: 30,
+        borderWidth: 1,
+        borderColor: 'rgb(255, 255, 255)'
+    },
+    styleText: {
+        margin: 0,
+        fontSize: 30,
+        padding: 12,
+        //borderRadius: 6,
+        fontFamily: 'CallOfOpsDuty',
+        color: 'rgb(255, 255, 255)',
+        alignSelf: 'center',
+    },
+    angle: {
+        position: "absolute", width: 14, height: 14, borderColor: 'white',
+    },
+    tl: {
+        top: -1, left: -1, borderTopWidth: 3, borderLeftWidth: 3, borderTopLeftRadius: 0
+    },
+    tr:{
+        top: -1, right: -1, borderTopWidth: 3, borderRightWidth: 3, borderTopRightRadius: 0
+    },
+    bl:{
+        bottom: -1, left: -1, borderBottomWidth: 3, borderLeftWidth: 3, borderBottomLeftRadius: 0
+    },
+    br:{
+        bottom: -1, right: -1, borderBottomWidth: 3, borderRightWidth: 3, borderBottomRightRadius: 0
+    }
 });

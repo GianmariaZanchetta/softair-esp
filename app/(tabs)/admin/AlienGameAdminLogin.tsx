@@ -13,7 +13,7 @@ export default function AlienGameAdminLogin () {
     const [text, setText] = useState("")
 
     const verifyAdmin = () =>{
-        if (text === "A") {//psw prod: BucoModellista02, non è sicura ovviamenete, per provare la tengo così
+        if (text === "BucoModellista02") {//psw prod: BucoModellista02, non è sicura ovviamenete, per provare la tengo così
             router.replace("/(tabs)/admin/AlienGameChangeSecret")
         } else {
             Alert.alert(
