@@ -1,14 +1,79 @@
 import {View, StyleSheet, Text} from "react-native"
 import React, { useEffect, useRef, useState } from "react"
 import { useAudioPlayer } from 'expo-audio';
+import { useFonts } from 'expo-font';
+
+const audioSource = require('../../assets/alienSound.mp3')
+const evilLaugh = require('../../assets/evilLaugh.mp3')
 
 
 export default function AlienGameMissionComplete() {
 
-   
-    const [timeLeft, setTimeLeft] = useState(20);
-  const [isRunning, setIsRunning] = useState(true);
+    const player = useAudioPlayer(audioSource);
+    const playerLaugh = useAudioPlayer(evilLaugh);
+
+    const [audio, setAudio] = React.useState(false)
+    //const [audioLaugh, setAudioLaugh] = React.useState(false)
+    const [timeLeft, setTimeLeft] = useState(30);
+    const [isRunning, setIsRunning] = useState(true);
     const [showTimer, setShowTimer] = useState(true);
+    const [fontsLoaded] = useFonts({
+            predator: require('../../assets/fonts/predator.ttf'),
+        });
+
+    if(!fontsLoaded) {
+        return null
+    }
+
+    //effetto alieno
+    useEffect(()=>{
+            if(!showTimer) {
+                
+                return
+            }
+            const time = setInterval(()=>{
+            setAudio(true)
+            })
+    
+            setTimeout(()=>{
+                clearInterval(time)
+                setAudio(false)
+            }, 30000)//l'audio è un loop infinito, modificare il tempo in ms per decidere la lunghezza
+    
+        }, [showTimer])
+
+    useEffect(()=>{
+            if(!showTimer) return
+            if(audio){
+                player.loop=true;
+                player.seekTo(0);
+                player.play();  
+            }
+            if(!audio){
+                player.pause()
+            }
+    
+        }, [audio, showTimer])
+
+
+
+
+        // risata finale(che socondo me fa cacare ma la vogliono così...)
+
+
+    useEffect(()=>{
+            if(showTimer) return
+            if(!showTimer){
+                playerLaugh.loop=false;
+                playerLaugh.seekTo(0);
+                playerLaugh.play();  
+            }
+            
+    
+        }, [showTimer])
+
+
+
 
   useEffect(() => {
     let interval:any;
@@ -63,17 +128,18 @@ const style = StyleSheet.create({
     },
     titleTextView:{
         color: 'rgb(0, 0, 0)',
-        fontSize: 45,
-        fontFamily: 'CallOfOpsDuty',
+        fontSize: 60,
+        fontFamily: 'predator',
         marginTop: 45,
         alignSelf: 'center',
         marginBottom: 50,
         //zIndex: 1,
+        textAlign: 'center',
     },
     textView:{
         //marginTop: 50,
-        fontSize: 80,
-        fontFamily: 'CallOfOpsDuty',
+        fontSize: 100,
+        fontFamily: 'predator',
         textAlign: 'center',
         marginBottom: 10,
     }

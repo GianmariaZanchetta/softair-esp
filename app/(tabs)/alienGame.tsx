@@ -116,12 +116,15 @@ export default function alienGame() {
 
             <Text
                 style={{
-                      marginTop: 40,
-                      fontSize: 25,
-                      color: 'rgb(255, 255, 255)',
-                      fontFamily: 'CallOfOpsDuty',
-                      textAlign: "center",
-            
+                        marginTop: 40,
+                        fontSize: 35,
+                        color: 'rgb(255, 255, 255)',
+                        fontFamily: 'predator',
+                        textAlign: "center",
+                      
+                        textShadowColor: '#fff',
+                        textShadowOffset: { width: 0, height: 0 },
+                        textShadowRadius: 1,
                     }}>
                 Inserisci il codice
             </Text>
